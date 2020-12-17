@@ -17,7 +17,7 @@ export default {
 
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
     plugins: [
-        {src: '~/plugins/Vuelidate'}
+        '~/plugins/vuelidate',
     ],
 
     // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -26,12 +26,17 @@ export default {
     // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
     buildModules: ['@nuxt/typescript-build'],
 
-    // Modules (https://go.nuxtjs.dev/config-modules)
     modules: [
-        // https://go.nuxtjs.dev/bootstrap
+        '@nuxtjs/axios/nuxt',
         'bootstrap-vue/nuxt',
         'nuxt-i18n',
     ],
+    axios: {
+        // proxy: true
+        common: {
+            'Accept': 'application/json, text/plain, */*'
+        },
+    },
     i18n: {
         locales: ['en', 'es'],
         defaultLocale: 'en',

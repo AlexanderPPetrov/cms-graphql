@@ -17,7 +17,6 @@ async function start() {
 
     // Build only in dev mode
     if (process.env.NODE_ENV === 'development') {
-        consola.log('test');
         const builder = new Builder(nuxt);
         await builder.build()
     }
