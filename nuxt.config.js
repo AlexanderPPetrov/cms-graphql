@@ -31,15 +31,15 @@ export default {
         // https://go.nuxtjs.dev/bootstrap
         'bootstrap-vue/nuxt',
         'nuxt-i18n',
-        {
-            locales: ['en', 'es'],
-            defaultLocale: 'en',
-            vueI18n: {
-                fallbackLocale: 'en',
-                messages: translations,
-            }
-        }
     ],
+    i18n: {
+        locales: ['en', 'es'],
+        defaultLocale: 'en',
+        vueI18n: {
+            fallbackLocale: 'en',
+            messages: translations,
+        }
+    },
     bootstrapVue: {
         bootstrapCSS: false,
         bootstrapVueCSS: false,
