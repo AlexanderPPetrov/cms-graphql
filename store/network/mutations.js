@@ -1,5 +1,6 @@
 import mutations from './mutation-types';
 
+
 export default {
     [mutations.ADD_ACTIVE_ACTION](state, action) {
         state.activeActions.push(action)

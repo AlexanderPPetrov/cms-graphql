@@ -1,5 +1,4 @@
 import mutations from "../store/network/mutation-types";
-import axios from "@nuxtjs/axios";
 
 const buildFormData = function (formData, data, parentKey) {
     if (Array.isArray(data)) {

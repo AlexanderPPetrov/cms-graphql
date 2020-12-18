@@ -7,7 +7,19 @@
 </template>
 
 <script>
-    export default {}
+    import actions from '../store/user/action-types.js';
+
+    export default {
+        name: 'gb-main-categories-chart-wrapper',
+        components: {
+
+        },
+        created(){
+            console.log(actions);
+            debugger
+            this.$store.dispatch(`user/${actions.GET_TEST_DATA}`);
+        }
+    };
 </script>
 
 <style>

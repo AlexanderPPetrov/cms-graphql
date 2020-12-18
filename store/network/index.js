@@ -1,5 +1,5 @@
-export const state = () => ({
+export default {
     activeActions: [],
     responseErrors: [],
     activeRooms: [],
-})
+}
