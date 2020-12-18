@@ -5,14 +5,14 @@ import {
     Route,
 } from "tsoa";
 
-import {LoginService, LoginUserParams, UserToken} from "./loginService";
+import {LoginService, LoginUserParams, LoggedUser} from "./loginService";
 
 @Route("auth/login")
-export class AuthController extends Controller {
+export class LoginController extends Controller {
     @Post()
     public async login(
         @Body() requestBody: LoginUserParams
-    ): Promise<UserToken | null> {
+    ): Promise<LoggedUser | null> {
         return new LoginService().login(requestBody);
     }
 }

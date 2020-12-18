@@ -1,14 +1,12 @@
-import {UserModel, User} from "../users/user";
+import {UserModel, User} from "../../users/user";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 export type LoginUserParams = Pick<User, "email" | "password" >;
+export type LoggedUser = Omit<User, "password" > & {token: string};
 
-export interface UserToken {
-    token: string,
-}
 export class LoginService {
-    public async login(loginUserParams: LoginUserParams): Promise<UserToken | null> {
+    public async login(loginUserParams: LoginUserParams): Promise<LoggedUser | null> {
         const user = await UserModel.findOne({
             email: loginUserParams.email,
         });
@@ -41,7 +39,7 @@ export class LoginService {
                 userToken.token = token!;
             }
         );
-        return userToken;
+        return {...user, ...userToken};
     }
 
 }

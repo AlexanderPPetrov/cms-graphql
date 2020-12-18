@@ -48,10 +48,10 @@ export class UsersController extends Controller {
     }
 }
 
-@Route("testData")
+@Route("getCurrentUser")
 export class TestData extends Controller {
     @Get()
-    public async getTestData(
+    public async getCurrentUser(
     ): Promise<GetUsersParams | null> {
         return {
             _id: 'asd',

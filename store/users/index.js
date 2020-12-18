@@ -1,4 +1,3 @@
-export const state = () => ({
-    firstName: 'oooooooooooooooooo',
-    lastName: 'test',
-})
+export default {
+    currentUser: {},
+}

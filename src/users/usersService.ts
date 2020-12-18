@@ -25,7 +25,7 @@ export class UsersService {
         return allUsers;
     }
     public async create(userParams: CreateUserParams): Promise<User | null> {
-        const user = await UserModel.findOneAndUpdate({
+        const user = await UserModel.findOne({
             email: userParams.email
         });
         if(user){

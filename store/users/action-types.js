@@ -1,3 +1,3 @@
 export default {
-    GET_TEST_DATA: 'GET_TEST_DATA',
+    GET_CURRENT_USER: 'GET_CURRENT_USER',
 };
