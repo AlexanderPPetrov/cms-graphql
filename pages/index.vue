@@ -14,7 +14,7 @@
 
         },
         async fetch({ store }){
-            await store.dispatch(`users/${actions.GET_TEST_DATA}`);
+            await store.dispatch(`users/${actions.GET_CURRENT_USER}`);
         },
         computed: {
             getUserName(){
