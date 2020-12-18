@@ -47,3 +47,20 @@ export class UsersController extends Controller {
         return new UsersService().remove(id);
     }
 }
+
+@Route("testData")
+export class TestData extends Controller {
+    @Get()
+    public async getTestData(
+    ): Promise<GetUsersParams | null> {
+        return {
+            _id: 'asd',
+            createdAt: 2020,
+            email: 'test@abv.bg',
+            firstName: 'Al',
+            lastName: 'Bundy',
+            lastLogin: 2200,
+            role: 'admin',
+        };
+    }
+}

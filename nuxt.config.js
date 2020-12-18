@@ -1,5 +1,4 @@
-import translations from './translations';
-export default {
+module.exports = {
     head: {
         title: 'cms',
         meta: [
@@ -18,7 +17,7 @@ export default {
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
     plugins: [
         '~/plugins/vuelidate',
-        '~/plugins/network-client',
+        '~/plugins/axios',
     ],
 
     // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -28,22 +27,34 @@ export default {
     buildModules: ['@nuxt/typescript-build'],
 
     modules: [
-        '@nuxtjs/axios/nuxt',
+        '@nuxtjs/axios',
         'bootstrap-vue/nuxt',
         'nuxt-i18n',
     ],
     axios: {
-        // proxy: true
+        baseURL: 'http://localhost:3000/api',
         common: {
             'Accept': 'application/json, text/plain, */*'
         },
+    },
+    publicRuntimeConfig: {
+        axios: {
+            browserBaseURL: process.env.BROWSER_BASE_URL
+        }
+    },
+    privateRuntimeConfig: {
+        axios: {
+            baseURL: process.env.BASE_URL
+        }
     },
     i18n: {
         locales: ['en', 'es'],
         defaultLocale: 'en',
         vueI18n: {
             fallbackLocale: 'en',
-            messages: translations,
+            messages: {
+
+            },
         }
     },
     bootstrapVue: {
