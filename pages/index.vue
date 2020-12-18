@@ -14,14 +14,15 @@
         components: {
 
         },
-        fetch(){
-            this.$store.dispatch(`users/${actions.GET_TEST_DATA}`);
+        async fetch({ store }){
+            await store.dispatch(`users/${actions.GET_TEST_DATA}`);
         },
         computed: {
             getUserName(){
                 return this.$store.state.users.firstName
             }
-        }
+        },
+
     };
 </script>
 

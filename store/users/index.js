@@ -1,3 +1,4 @@
-export default {
-    firstName: '',
-}
+export const state = () => ({
+    firstName: 'oooooooooooooooooo',
+    lastName: 'test',
+})
