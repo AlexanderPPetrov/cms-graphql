@@ -7,19 +7,16 @@ import {
     Delete,
     Path,
     Route,
-    SuccessResponse,
     Response,
+    SuccessResponse,
 } from "tsoa";
 import {User} from "./user";
+
+import {ValidateErrorResponse} from '../helpers/ValidateErrorResponse';
 
 import {UsersService, CreateUserParams, GetUsersParams} from "./usersService";
 
 
-//TODO describe a better validation type
-interface ValidateErrorJSON {
-    message: "Validation failed";
-    details: { [name: string]: unknown };
-}
 @Route("users")
 export class UsersController extends Controller {
     @Get()
@@ -33,7 +30,7 @@ export class UsersController extends Controller {
         return new UsersService().get(id);
     }
 
-    @Response<ValidateErrorJSON>(422, "validation_error")
+    @Response<ValidateErrorResponse>(422, "Validation failed")
     @SuccessResponse("201", "Created") // Custom success response
     @Post()
     public async createUser(

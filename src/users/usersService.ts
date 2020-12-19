@@ -1,7 +1,7 @@
 import {UserModel, User} from "./user";
 import bcrypt from 'bcrypt';
-import validator from 'validator';
 import {ValidateError, FieldErrors} from "tsoa";
+import validateCredentials from "../helpers/validateCredentials";
 
 export type CreateUserParams = Omit<User, "_id">;
 export type GetUsersParams = Omit<User, "password">;
@@ -29,33 +29,15 @@ export class UsersService {
     }
 
     public async create(userParams: CreateUserParams): Promise<User | null> {
-        const fieldErrors: FieldErrors = {};
 
-        if (!validator.isEmail(userParams.email)) {
-            fieldErrors.email = {
-                message: 'email_invalid',
-                value: userParams.email,
-            };
-        }
-        if (!validator.isLength(userParams.password, {min: 6})) {
-            fieldErrors.password = {
-                message: 'password_min_length',
-                value: userParams.password,
-            }
-        }
-        if (!validator.isLength(userParams.password, {max: 20})) {
-            fieldErrors.password = {
-                message: 'password_max_length',
-                value: userParams.password,
-            }
-        }
-        if (Object.keys(fieldErrors).length) {
-            throw new ValidateError(fieldErrors, 'validation_error');
-        }
+        validateCredentials(userParams.email, userParams.password);
 
         const user = await UserModel.findOne({
             email: userParams.email
         });
+
+        const fieldErrors: FieldErrors = {};
+
         if (user) {
             fieldErrors.email = {
                 message: 'email_exists',

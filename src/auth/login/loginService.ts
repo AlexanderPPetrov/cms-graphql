@@ -1,23 +1,38 @@
 import {UserModel, User} from "../../users/user";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import {ValidateError, FieldErrors} from "tsoa";
 
-export type LoginUserParams = Pick<User, "email" | "password" >;
-export type LoggedUser = Omit<User, "password" > & {token: string};
+import validateCredentials from "../../helpers/validateCredentials";
+
+export type LoginUserParams = Pick<User, "email" | "password">;
+export type LoggedUser = Omit<User, "password"> & { token: string };
 
 export class LoginService {
     public async login(loginUserParams: LoginUserParams): Promise<LoggedUser | null> {
+
+        validateCredentials(loginUserParams.email, loginUserParams.password);
+
         const user = await UserModel.findOne({
             email: loginUserParams.email,
         });
-        if(!user){
-            //TODO invalid email
-            return null;
+
+        const fieldErrors: FieldErrors = {};
+        if (!user) {
+            fieldErrors.email = {
+                message: 'email_does_not_exist',
+                value: loginUserParams.email,
+            };
+            throw new ValidateError(fieldErrors, 'validation_error');
         }
+
         const passwordMatch = await bcrypt.compare(loginUserParams.password, user.password);
-        if(!passwordMatch){
-            //TODO invalid password
-            return null
+        if (!passwordMatch) {
+            fieldErrors.password = {
+                message: 'password_incorrect',
+                value: loginUserParams.password,
+            };
+            throw new ValidateError(fieldErrors, 'validation_error');
         }
         const payload = {
             user: {
