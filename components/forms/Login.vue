@@ -63,7 +63,7 @@
                 },
                 password: {
                     required,
-                    minLength: minLength(5),
+                    minLength: minLength(6),
                     serverError() {
                         return !this.getServerError('password').length;
                     }

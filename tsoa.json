@@ -6,10 +6,14 @@
     ],
     "spec": {
         "outputDirectory": "build",
-        "specVersion": 3
+        "specVersion": 3,
+        "basePath": "/api"
     },
     "routes": {
         "basePath": "/api",
         "routesDir": "build"
-    }
+    },
+    "ignore": [
+        "src/validation"
+    ]
 }
