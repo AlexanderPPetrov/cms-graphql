@@ -1,4 +1,6 @@
-module.exports = {
+import {i18nConfig} from './config';
+
+export default {
     head: {
         title: 'cms',
         meta: [
@@ -17,22 +19,24 @@ module.exports = {
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
     plugins: [
         '~/plugins/vuelidate',
-        '~/plugins/axios',
+        '~/plugins/network-client',
     ],
 
     // Auto import components (https://go.nuxtjs.dev/config-components)
     components: true,
 
     // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-    buildModules: ['@nuxt/typescript-build'],
+    buildModules: [
+        '@nuxt/typescript-build',
+    ],
 
     modules: [
         '@nuxtjs/axios',
         'bootstrap-vue/nuxt',
-        'nuxt-i18n',
+        ['nuxt-i18n', i18nConfig],
     ],
     axios: {
-        baseURL: 'http://localhost:3000/api',
+        baseURL: process.env.API_BASE_URL,
         common: {
             'Accept': 'application/json, text/plain, */*'
         },
@@ -44,17 +48,7 @@ module.exports = {
     },
     privateRuntimeConfig: {
         axios: {
-            baseURL: process.env.BASE_URL
-        }
-    },
-    i18n: {
-        locales: ['en', 'es'],
-        defaultLocale: 'en',
-        vueI18n: {
-            fallbackLocale: 'en',
-            messages: {
-
-            },
+            baseURL: process.env.API_BASE_URL
         }
     },
     bootstrapVue: {
@@ -71,5 +65,7 @@ module.exports = {
         ],
     },
     // Build Configuration (https://go.nuxtjs.dev/config-build)
-    build: {}
+    build: {
+
+    }
 }

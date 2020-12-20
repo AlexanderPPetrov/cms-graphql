@@ -23,12 +23,4 @@ export default {
     [mutations.UPDATE_RESPONSE_ERROR](state, {index, error}) {
         state.responseErrors.splice(index, 1, error);
     },
-    [mutations.ADD_ACTIVE_ROOM](state, roomName) {
-        if(!state.activeRooms.includes(roomName)){
-            state.activeRooms.push(roomName);
-        }
-    },
-    [mutations.REMOVE_ACTIVE_ROOM](state, roomName) {
-        state.activeRooms = state.activeRooms.filter(room => room !== roomName);
-    },
 };

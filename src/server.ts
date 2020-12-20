@@ -3,8 +3,7 @@ import consola from "consola";
 
 // @ts-ignore
 import { Nuxt, Builder } from 'nuxt';
-const configPath = process.env.NODE_ENV === 'development' ? '../nuxt.config.js' : '../../nuxt.config.js';
-const config = require(configPath);
+import config from '../nuxt.config.js';
 
 async function start() {
     // Init Nuxt.js
