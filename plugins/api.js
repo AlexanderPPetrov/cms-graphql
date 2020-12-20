@@ -1,46 +1,9 @@
 import mutations from "../store/network/mutation-types";
-const buildFormData = function (formData, data, parentKey) {
-    if (Array.isArray(data)) {
-        data.forEach(element => {
-            buildFormData(formData, element, parentKey ? `${parentKey}[]` : '[]');
-        })
-    } else {
-        if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-            Object.keys(data).forEach(key => {
-                buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-            });
-        } else {
-            const value = data == null ? '' : data;
-            formData.append(parentKey, value);
-        }
-    }
 
-};
 export default function ({$axios, store, redirect}, inject) {
 
-    $axios.onRequest(options => {
-        const CancelToken = $axios.CancelToken;
-        console.log('Making request to ' + options.url)
-        // const activeRequest = store.state.network.activeActions.find(action => action.name === options.action);
-        // if (activeRequest) {
-        //     activeRequest.cancel(`Cancel previous call for: ${options.action}`);
-        //     store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, options.action);
-        // }
-    });
-
-    $axios.onError(error => {
-        const code = parseInt(error.response && error.response.status)
-        // if (code === 400) {
-        //     redirect('/400')
-        // }
-        if (code === 422){
-            console.log('???')
-        }
-    })
-
-
     const CancelToken = $axios.CancelToken;
-    const networkClient = {
+    const api = {
         get(action, url, params, success, failure, done, repeatTime = 0, executeInitially = true) {
             this.request({
                 method: 'get',
@@ -52,7 +15,7 @@ export default function ({$axios, store, redirect}, inject) {
                 done,
                 repeatTime,
                 executeInitially,
-            });
+            }, $axios.$get);
         },
         post(action, url, params, success, failure, done, repeatTime = 0, executeInitially = true) {
             this.request({
@@ -65,7 +28,7 @@ export default function ({$axios, store, redirect}, inject) {
                 done,
                 repeatTime,
                 executeInitially,
-            });
+            }, $axios.$post);
         },
         put(action, url, params, success, failure, done) {
             this.request({
@@ -76,7 +39,7 @@ export default function ({$axios, store, redirect}, inject) {
                 success,
                 failure,
                 done,
-            });
+            }, $axios.$put);
         },
         delete(action, url, params, success, failure, done) {
             this.request({
@@ -87,9 +50,9 @@ export default function ({$axios, store, redirect}, inject) {
                 success,
                 failure,
                 done,
-            });
+            }, $axios.$delete);
         },
-        request: (options = {}) => {
+        request: (options = {}, $axiosMethod) => {
             if (!options.url) {
                 console.log('URL is required');
                 return;
@@ -99,16 +62,6 @@ export default function ({$axios, store, redirect}, inject) {
             if (options.params && options.params.external) {
                 baseURL = '';
             }
-            if (options.method == 'post') {
-                options.config = {headers: {'Content-Type': 'multipart/form-data'}};
-                if (options.params && options.params.formData) {
-                    const bodyFormData = new FormData();
-                    buildFormData(bodyFormData, options.params.formData);
-                    options.data = bodyFormData;
-                    delete options.params.formData;
-                }
-            }
-
             const data = Object.assign({
                 method: 'get',
             }, options);
@@ -136,49 +89,38 @@ export default function ({$axios, store, redirect}, inject) {
 
             if (!options.executeInitially) {
                 requestOptions.executeInitially = true;
-                networkClient.requestWithTimeout(requestOptions);
+                api.requestWithTimeout(requestOptions);
                 return;
             }
-            $axios(data)
+
+            $axiosMethod(data.url, data.params)
                 .then(response => {
-                    if (response.data.error || response.status === 'error') {
-                        const error = response.data.error ? response.data.error : response.data;
-                        if (options.failure) {
-                            options.failure(error);
-                        }
-                        store.commit(`network/${mutations.ADD_RESPONSE_ERROR}`, {
-                            name: options.action,
-                            error
-                        });
-                    } else {
-                        if (options.success) {
-                            if (response.data.data && response.status !== 'error') {
-                                options.success(response.data.data);
-                            } else {
-                                //Sometimes there is no data nesting so remove the status and pass the response.data object
-                                delete response.data.status;
-                                options.success(response.data);
-                            }
-                        }
+                    if (options.success) {
+                        options.success(response);
                     }
                     if (options.done) {
-                        options.done(response.data)
+                        options.done(response)
                     }
-                    networkClient.requestWithTimeout(requestOptions);
+                    api.requestWithTimeout(requestOptions);
 
                 })
                 .catch(error => {
-                    if (options.failure) {
-                        options.failure(error);
+                    const code = parseInt(error.response && error.response.status)
+
+                    // 422 - Fields validation error
+                    if (code === 422) {
                         store.commit(`network/${mutations.ADD_RESPONSE_ERROR}`, {
                             name: options.action,
-                            error
+                            error: error.response.data,
                         });
+                    }
+                    if (options.failure) {
+                        options.failure(error);
                     }
                     if (options.done) {
                         options.done(error)
                     }
-                    networkClient.requestWithTimeout(requestOptions);
+                    api.requestWithTimeout(requestOptions);
                 });
         },
         requestWithTimeout: options => {
@@ -190,7 +132,7 @@ export default function ({$axios, store, redirect}, inject) {
                 }
                 let action = store.state.network.activeActions[index];
                 const repeatTimeout = setTimeout(() => {
-                    networkClient.request(options);
+                    api.request(options);
                 }, options.repeatTime);
 
                 action = Object.assign({}, action, {repeatTimeout});
@@ -209,6 +151,6 @@ export default function ({$axios, store, redirect}, inject) {
         }
     };
 
-    // Inject to context as $networkClient
-    inject('networkClient', networkClient)
+    // Inject to context as $api
+    inject('api', api)
 }

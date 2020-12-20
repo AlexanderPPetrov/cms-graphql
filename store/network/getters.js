@@ -1,16 +1,16 @@
 export default {
-    getResponseError: state => {
-        return name => {
-            const error = state.responseErrors.filter(error => {
-                return error.name === name
+    getFieldError: state => {
+        return (actionName, key) => {
+            const matched = state.responseErrors.find(error => {
+                return error.name === actionName
             });
-            if (error.length) {
-                if(error[0].error && error[0].error.message){
-                    return [error[0].error.message];
+            if (matched && matched.error.details) {
+                const fieldError = matched.error.details[`requestBody.${key}`];
+                if(fieldError){
+                    return fieldError;
                 }
-                return error[0].error
             }
-            return {};
+            return null;
         };
     },
     getActiveAction: state => {

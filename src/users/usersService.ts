@@ -2,6 +2,7 @@ import {UserModel, User} from "./user";
 import bcrypt from 'bcrypt';
 import {ValidateError, FieldErrors} from "tsoa";
 import validateCredentials from "../helpers/validateCredentials";
+import {generateError} from "../helpers/ValidateErrorResponse";
 
 export type CreateUserParams = Omit<User, "_id">;
 export type GetUsersParams = Omit<User, "password">;
@@ -36,13 +37,10 @@ export class UsersService {
             email: userParams.email
         });
 
-        const fieldErrors: FieldErrors = {};
+        let fieldErrors: FieldErrors = {};
 
         if (user) {
-            fieldErrors.email = {
-                message: 'email_exists',
-                value: userParams.email,
-            };
+            generateError(fieldErrors, 'email', userParams.email, 'exists');
             throw new ValidateError(fieldErrors, 'validation_error');
         }
         const newUser = new UserModel(userParams);

@@ -1,20 +1,15 @@
 import validator from "validator";
 import {FieldErrors, ValidateError} from 'tsoa';
+import {generateError} from "./ValidateErrorResponse";
 
 
 export default function (email: string, password: string): FieldErrors {
-    const fieldErrors: FieldErrors = {};
+    let fieldErrors: FieldErrors = {};
     if (!validator.isEmail(email)) {
-        fieldErrors.email = {
-            message: 'email_invalid',
-            value: email,
-        };
+        generateError(fieldErrors, 'email', email);
     }
     if (!validator.isLength(password, {min: 6, max: 20})) {
-        fieldErrors.password = {
-            message: 'password_invalid',
-            value: password,
-        }
+        generateError(fieldErrors, 'password', password);
     }
     if (Object.keys(fieldErrors).length) {
         throw new ValidateError(fieldErrors, 'validation_error');

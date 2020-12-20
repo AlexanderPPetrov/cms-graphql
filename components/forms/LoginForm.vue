@@ -5,7 +5,7 @@
                     :value="form.email"
                     v-bind:email.sync="form.email"
                     :placeholder="$t('user.email')"
-                    :invalidFeedback="getServerError('email') || $t('user.email_invalid')"
+                    :invalidFeedback="getFieldError('email') || $t('user.email_invalid')"
                     @focus="clearServerError('email')"
                     :v="$v.form.email"></form-input>
         <form-input fieldName="password"
@@ -13,7 +13,7 @@
                     :value="form.password"
                     v-bind:password.sync="form.password"
                     :placeholder="$t('user.password')"
-                    :invalidFeedback="this.getServerError('password') || $t('user.password_invalid')"
+                    :invalidFeedback="this.getFieldError('password') || $t('user.password_invalid')"
                     @focus="clearServerError('password')"
                     :v="$v.form.password"></form-input>
 
@@ -54,42 +54,37 @@
                     required,
                     email,
                     serverError() {
-                        return !this.getServerError('email').length;
+                        return !this.getFieldError('email').length;
                     }
                 },
                 password: {
                     required,
                     minLength: minLength(6),
                     serverError() {
-                        return !this.getServerError('password').length;
+                        return !this.getFieldError('password').length;
                     }
                 },
             }
         },
-        computed: {
-            getLoginAction()
-            {
-                return '';
-            //    return actions.REGISTER_USER;
-            },
-
-        },
         methods: {
-            getServerError(key) {
-                // if (this.$store.getters['network/getResponseError'](actions.REGISTER_USER)[key]) {
-                //     this.$v.form[key].$touch();
-                //     return this.$store.getters['network/getResponseError'](actions.REGISTER_USER)[key];
-                // }
+            getFieldError(key) {
+                const fieldError = this.$store.getters['network/getFieldError'](actions.AUTH_LOGIN, key);
+                if (fieldError) {
+                    this.$v.form[key].$touch();
+                    return this.$t(`user.${fieldError.message}`);
+                }
                 return '';
             },
             clearServerError(key) {
-                // const responseErrors = this.$store.state.network.responseErrors;
-                // const index = responseErrors.findIndex(error => error.name === actions.REGISTER_USER);
-                // if (index !== -1 && responseErrors[index].error[key]) {
-                //     let error = Object.assign({}, responseErrors[index]);
-                //     delete error.error[key];
-                //     this.$store.commit(`network/${mutations.UPDATE_RESPONSE_ERROR}`, {index, error});
-                // }
+                const responseErrors = this.$store.state.network.responseErrors;
+                const index = responseErrors.findIndex(error => error.name === actions.AUTH_LOGIN);
+
+                //TODO
+                if (index !== -1) {
+                    let error = Object.assign({}, responseErrors[index]);
+                    delete error.error[key];
+                    this.$store.commit(`network/${mutations.UPDATE_RESPONSE_ERROR}`, {index, error});
+                }
             },
             onLogin(e) {
                 e.preventDefault();
@@ -97,13 +92,13 @@
                     this.$v.$touch();
                     return;
                 }
+
                 this.$refs.loginButton.blur();
                 this.$store.dispatch(`users/${actions.AUTH_LOGIN}`, {
                     email: this.form.email,
                     password: this.form.password,
                 });
             },
-
         },
 
     }

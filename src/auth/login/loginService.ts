@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import {ValidateError, FieldErrors} from "tsoa";
 
 import validateCredentials from "../../helpers/validateCredentials";
+import {generateError} from "../../helpers/ValidateErrorResponse";
 
 export type LoginUserParams = Pick<User, "email" | "password">;
 export type LoggedUser = Omit<User, "password"> & { token: string };
@@ -17,21 +18,15 @@ export class LoginService {
             email: loginUserParams.email,
         });
 
-        const fieldErrors: FieldErrors = {};
+        let fieldErrors: FieldErrors = {};
         if (!user) {
-            fieldErrors.email = {
-                message: 'email_does_not_exist',
-                value: loginUserParams.email,
-            };
+            generateError(fieldErrors, 'email', loginUserParams.email, 'does_not_exist');
             throw new ValidateError(fieldErrors, 'validation_error');
         }
 
         const passwordMatch = await bcrypt.compare(loginUserParams.password, user.password);
         if (!passwordMatch) {
-            fieldErrors.password = {
-                message: 'password_incorrect',
-                value: loginUserParams.password,
-            };
+            generateError(fieldErrors, 'password', loginUserParams.password);
             throw new ValidateError(fieldErrors, 'validation_error');
         }
         const payload = {
