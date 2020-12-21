@@ -35,21 +35,25 @@ export class LoginService {
                 role: user.role,
             }
         };
-        let userToken = {
-            token: '',
-        };
-        jwt.sign(
+        const token = await jwt.sign(
             payload,
             process.env.JWT_SECRET!,
             {
                 expiresIn: '1d'
-            },
-            (err, token) => {
-                if (err) throw err;
-                userToken.token = token!;
-            }
-        );
-        return {...user, ...userToken};
+            });
+
+        const userData: LoggedUser = {
+            _id: user._id,
+            token,
+            createdAt: user.createdAt,
+            email: user.email,
+            firstName: user.firstName,
+            lastLogin: user.lastLogin,
+            lastName: user.lastName,
+            role: user.role,
+        };
+
+        return userData;
     }
 
 }

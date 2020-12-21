@@ -10,7 +10,6 @@ interface User {
     lastLogin: number;
     role: "user" | "admin";
 }
-//TODO get _doc
 interface UserDocument extends User, mongoose.Document {
     _id: string;
 }
