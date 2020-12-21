@@ -1,14 +1,15 @@
 <template>
-    <div class="row justify-content-center">
-        <div class="col-md-4 col-xl-2">
-            <login-form></login-form>
-            {{ getUserName }}
+    <div class="row justify-content-center vh-100 d-flex align-items-center">
+        <div class="col-md-4 col-xl-2 pb-5">
+                <div class="d-flex justify-content-center pb-4">
+                    <img src="~/assets/images/logo.jpg"/>
+                </div>
+                <login-form></login-form>
         </div>
     </div>
 </template>
 
 <script>
-    import actions from '../store/users/action-types'
     import LoginForm from '../components/forms/LoginForm';
 
     export default {
@@ -16,18 +17,5 @@
         components: {
             LoginForm,
         },
-        async fetch({ store }){
-            await store.dispatch(`users/${actions.GET_CURRENT_USER}`);
-        },
-        computed: {
-            getUserName(){
-                return this.$store.state.users.currentUser.firstName
-            }
-        },
-
     };
 </script>
-
-<style>
-
-</style>

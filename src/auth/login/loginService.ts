@@ -26,7 +26,7 @@ export class LoginService {
 
         const passwordMatch = await bcrypt.compare(loginUserParams.password, user.password);
         if (!passwordMatch) {
-            generateError(fieldErrors, 'password', loginUserParams.password);
+            generateError(fieldErrors, 'password', loginUserParams.password, 'incorrect');
             throw new ValidateError(fieldErrors, 'validation_error');
         }
         const payload = {

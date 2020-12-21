@@ -5,6 +5,7 @@ export default {
         email_does_not_exist: "Email does not exist",
         password: "password",
         password_invalid: "Your password should be between 6 and 20 characters",
+        password_incorrect: "Your password is incorrect",
         login: "login",
     },
 }

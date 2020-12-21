@@ -95,8 +95,13 @@
 
                 this.$refs.loginButton.blur();
                 this.$store.dispatch(`users/${actions.AUTH_LOGIN}`, {
-                    email: this.form.email,
-                    password: this.form.password,
+                    data: {
+                        email: this.form.email,
+                        password: this.form.password,
+                    },
+                    success: ()=> {
+                        this.$router.push({name: 'serverside'})
+                    }
                 });
             },
         },

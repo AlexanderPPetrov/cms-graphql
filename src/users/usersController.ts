@@ -59,12 +59,12 @@ export class TestData extends Controller {
     public async getCurrentUser(
     ): Promise<GetUsersParams | null> {
         return {
-            _id: 'asd',
-            createdAt: 2020,
-            email: 'test@abv.bg',
-            firstName: 'Al',
-            lastName: 'Bundy',
-            lastLogin: 2200,
+            _id: '123123123123',
+            createdAt: 1608544082900,
+            email: 'apetrovdev@gmail.com',
+            firstName: 'Aleksandar',
+            lastName: 'Petrov',
+            lastLogin: 1608544082900,
             role: 'admin',
         };
     }

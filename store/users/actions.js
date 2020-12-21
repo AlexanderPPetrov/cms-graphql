@@ -6,12 +6,15 @@ export default {
         const user = await this.$axios.$get('/getCurrentUser');
         commit(mutations.SET_CURRENT_USER, user)
     },
-    [actions.AUTH_LOGIN]({commit}, data) {
+    [actions.AUTH_LOGIN]({commit}, payload) {
         this.$api.post(
             actions.AUTH_LOGIN, '/auth/login',
-            data,
+            payload.data,
             (user) => {
                 commit(mutations.SET_CURRENT_USER, user);
-            })
+            }),
+            () => {
+                payload.success();
+            }
     }
 };
