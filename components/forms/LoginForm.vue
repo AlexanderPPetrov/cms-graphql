@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import {required, email, sameAs, minLength, requiredIf} from 'vuelidate/lib/validators';
+    import {required, email, minLength} from 'vuelidate/lib/validators';
     import FormInput from '../form-elements/FormInput';
 
     import actions from '../../store/users/action-types';
@@ -67,23 +67,26 @@
             }
         },
         methods: {
-            getFieldError(key) {
-                const fieldError = this.$store.getters['network/getFieldError'](actions.AUTH_LOGIN, key);
+            getFieldError(field) {
+                const fieldError = this.$store.getters['network/getFieldError'](actions.AUTH_LOGIN, field);
                 if (fieldError) {
-                    this.$v.form[key].$touch();
+                    this.$v.form[field].$touch();
                     return this.$t(`user.${fieldError.message}`);
                 }
                 return '';
             },
-            clearServerError(key) {
+            clearServerError(field) {
                 const responseErrors = this.$store.state.network.responseErrors;
                 const index = responseErrors.findIndex(error => error.name === actions.AUTH_LOGIN);
 
-                //TODO
-                if (index !== -1) {
-                    let error = Object.assign({}, responseErrors[index]);
-                    delete error.error[key];
-                    this.$store.commit(`network/${mutations.UPDATE_RESPONSE_ERROR}`, {index, error});
+                if (index !== -1 && responseErrors[index].error.details[`requestBody.${field}`]) {
+                    let fieldError = Object.assign({}, responseErrors[index]);
+                    delete fieldError.error.details[`requestBody.${field}`];
+                    if (Object.keys(fieldError.error.details).length) {
+                        this.$store.commit(`network/${mutations.UPDATE_RESPONSE_ERROR}`, {index, fieldError});
+                    } else {
+                        this.$store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, actions.AUTH_LOGIN);
+                    }
                 }
             },
             onLogin(e) {
@@ -99,11 +102,13 @@
                         email: this.form.email,
                         password: this.form.password,
                     },
-                    success: ()=> {
-                        this.$router.push({name: 'serverside'})
-                    }
+                    success: this.onLoginSuccess
                 });
             },
+            onLoginSuccess(user) {
+                console.log('user logged: ', user);
+                this.$router.push({name: 'serverside___en'})
+            }
         },
 
     }

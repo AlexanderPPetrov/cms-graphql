@@ -10,11 +10,11 @@ export default {
         this.$api.post(
             actions.AUTH_LOGIN, '/auth/login',
             payload.data,
-            (user) => {
+            user => {
+                if(payload.success){
+                    payload.success(user);
+                }
                 commit(mutations.SET_CURRENT_USER, user);
-            }),
-            () => {
-                payload.success();
-            }
+            })
     }
 };

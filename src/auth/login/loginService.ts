@@ -14,9 +14,9 @@ export class LoginService {
 
         validateCredentials(loginUserParams.email, loginUserParams.password);
 
-        const user = await UserModel.findOne({
+        let user = await UserModel.findOne({
             email: loginUserParams.email,
-        });
+        }).lean();
 
         let fieldErrors: FieldErrors = {};
         if (!user) {
@@ -41,19 +41,9 @@ export class LoginService {
             {
                 expiresIn: '1d'
             });
-
-        const userData: LoggedUser = {
-            _id: user._id,
-            token,
-            createdAt: user.createdAt,
-            email: user.email,
-            firstName: user.firstName,
-            lastLogin: user.lastLogin,
-            lastName: user.lastName,
-            role: user.role,
-        };
-
-        return userData;
+        // @ts-ignore
+        delete user.password;
+        return {...user, ...{token}};
     }
 
 }
