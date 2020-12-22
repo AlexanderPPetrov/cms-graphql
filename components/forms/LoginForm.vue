@@ -106,8 +106,8 @@
                 });
             },
             onLoginSuccess(user) {
-                console.log('user logged: ', user);
-                this.$router.push({name: 'serverside___en'})
+                console.log('logged with', user);
+                this.$router.push({name: 'index___en'})
             }
         },
 
