@@ -1,16 +1,15 @@
 import {app} from "./app";
 import consola from "consola";
 
-// @ts-ignore
-import { Nuxt, Builder } from 'nuxt';
+import {Nuxt, Builder} from 'nuxt';
 import config from '../nuxt.config.js';
 
 async function start() {
     // Init Nuxt.js
     const nuxt = new Nuxt(config);
 
-    const host: string = nuxt.options.server.host;
-    const port: string = nuxt.options.server.port;
+    const host = nuxt.options.server.host;
+    const port = nuxt.options.server.port;
 
     await nuxt.ready();
 
@@ -25,12 +24,11 @@ async function start() {
     app.use(nuxt.render);
 
     // Listen the server
-    // @ts-ignore
-    app.listen(port, host)
+    app.listen(port, host);
     consola.ready({
         message: `Server listening on http://${host}:${port}`,
         badge: true,
     });
-
 }
+
 start();

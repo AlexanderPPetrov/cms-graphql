@@ -26,9 +26,7 @@ export default {
     components: true,
 
     // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-    buildModules: [
-        '@nuxt/typescript-build',
-    ],
+    buildModules: [],
 
     modules: [
         '@nuxtjs/axios',
