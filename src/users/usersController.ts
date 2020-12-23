@@ -52,20 +52,3 @@ export class UsersController extends Controller {
         return new UsersService().remove(id);
     }
 }
-
-@Route("getCurrentUser")
-export class TestData extends Controller {
-    @Get()
-    public async getCurrentUser(
-    ): Promise<GetUsersParams | null> {
-        return {
-            _id: '123123123123',
-            createdAt: 1608544082900,
-            email: 'apetrovdev@gmail.com',
-            firstName: 'Aleksandar',
-            lastName: 'Petrov',
-            lastLogin: 1608544082900,
-            role: 'admin',
-        };
-    }
-}

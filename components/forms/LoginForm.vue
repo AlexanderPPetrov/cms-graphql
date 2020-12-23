@@ -5,17 +5,20 @@
                     :value="form.email"
                     v-bind:email.sync="form.email"
                     :placeholder="$t('user.email')"
-                    :invalidFeedback="getFieldError('email') || $t('user.email_invalid')"
-                    @focus="clearServerError('email')"
+                    :invalidFeedback="$t('user.email_invalid')"
                     :v="$v.form.email"></form-input>
         <form-input fieldName="password"
                     type="password"
                     :value="form.password"
                     v-bind:password.sync="form.password"
                     :placeholder="$t('user.password')"
-                    :invalidFeedback="this.getFieldError('password') || $t('user.password_invalid')"
-                    @focus="clearServerError('password')"
+                    :invalidFeedback="$t('user.password_invalid')"
                     :v="$v.form.password"></form-input>
+        <form-input fieldName="nonRequired"
+                    :value="form.nonRequired"
+                    v-bind:nonRequired.sync="form.nonRequired"
+                    :placeholder="$t('user.non_required')"
+                    ></form-input>
 
         <b-button ref="loginButton"
                   type="submit"
@@ -33,7 +36,6 @@
     import FormInput from '../form-elements/FormInput';
 
     import actions from '../../store/users/action-types';
-    import mutations from '../../store/network/mutation-types';
 
     export default {
         name: "login-form",
@@ -45,6 +47,7 @@
                 form: {
                     email: '',
                     password: '',
+                    nonRequired: '',
                 }
             };
         },
@@ -53,41 +56,22 @@
                 email: {
                     required,
                     email,
-                    serverError() {
-                        return !this.getFieldError('email').length;
+                    fieldError() {
+                        return !this.getFieldError('email');
                     }
                 },
                 password: {
                     required,
                     minLength: minLength(6),
-                    serverError() {
-                        return !this.getFieldError('password').length;
+                    fieldError() {
+                        return !this.getFieldError('password');
                     }
                 },
             }
         },
         methods: {
-            getFieldError(field) {
-                const fieldError = this.$store.getters['network/getFieldError'](actions.AUTH_LOGIN, field);
-                if (fieldError) {
-                    this.$v.form[field].$touch();
-                    return this.$t(`user.${fieldError.message}`);
-                }
-                return '';
-            },
-            clearServerError(field) {
-                const responseErrors = this.$store.state.network.responseErrors;
-                const index = responseErrors.findIndex(error => error.name === actions.AUTH_LOGIN);
-
-                if (index !== -1 && responseErrors[index].error.details[`requestBody.${field}`]) {
-                    let fieldError = Object.assign({}, responseErrors[index]);
-                    delete fieldError.error.details[`requestBody.${field}`];
-                    if (Object.keys(fieldError.error.details).length) {
-                        this.$store.commit(`network/${mutations.UPDATE_RESPONSE_ERROR}`, {index, fieldError});
-                    } else {
-                        this.$store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, actions.AUTH_LOGIN);
-                    }
-                }
+            getFieldError(fieldName) {
+                return this.$store.getters['network/getFieldError'](actions.AUTH_LOGIN, fieldName);
             },
             onLogin(e) {
                 e.preventDefault();

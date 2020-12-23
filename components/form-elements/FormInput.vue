@@ -8,12 +8,13 @@
                       :placeholder="placeholder">
         </b-form-input>
         <b-form-invalid-feedback v-if="invalidFeedback" :state="getState">
-            {{ invalidFeedback }}
+            {{ getInvalidFeedback }}
         </b-form-invalid-feedback>
     </b-form-group>
 </template>
 
 <script>
+    import mutations from '../../store/network/mutation-types';
 
     export default {
         name: 'cl-form-input',
@@ -42,10 +43,8 @@
                 type: String,
                 required: true
             },
-            v: {
-                type: Object,
-                required: true
-            },
+            v: Object,
+            actionName: String,
         },
         computed: {
             getState() {
@@ -53,8 +52,27 @@
                     return false;
                 }
                 return null;
-
             },
+            getFieldError() {
+                const fieldError = this.$store.getters['network/getFieldError'](this.actionName, this.fieldName);
+                if (fieldError) {
+                    return this.$t(`user.${fieldError}`);
+                }
+                return '';
+            },
+            getInvalidFeedback(){
+                if(this.getFieldError){
+                    return this.getFieldError
+                }
+                return this.invalidFeedback
+            }
+        },
+        watch: {
+            getFieldError: function(value){
+                if(value){
+                    this.$v.$touch();
+                }
+            }
         },
         methods: {
             formInputFieldOnInput(value){
@@ -62,7 +80,25 @@
             },
             formInputFieldOnFocus(value){
                 this.$emit('focus', value);
-            }
+                if(this.actionName){
+                    this.clearServerError();
+                }
+            },
+
+            clearServerError() {
+                const responseErrors = this.$store.state.network.responseErrors;
+                const index = responseErrors.findIndex(error => error.name === this.actionName);
+
+                if (index !== -1 && responseErrors[index].error.details[`requestBody.${this.fieldName}`]) {
+                    let fieldError = Object.assign({}, responseErrors[index]);
+                    delete fieldError.error.details[`requestBody.${this.fieldName}`];
+                    if (Object.keys(fieldError.error.details).length) {
+                        this.$store.commit(`network/${mutations.UPDATE_RESPONSE_ERROR}`, {index, fieldError});
+                    } else {
+                        this.$store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, this.actionName);
+                    }
+                }
+            },
         },
 
     };

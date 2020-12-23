@@ -7,7 +7,7 @@ export default {
             if (matched && matched.error.details) {
                 const fieldError = matched.error.details[`requestBody.${key}`];
                 if(fieldError){
-                    return fieldError;
+                    return fieldError.message;
                 }
             }
             return null;
@@ -15,11 +15,11 @@ export default {
     },
     getActiveAction: state => {
         return actionName => {
-            const actionIndex = state.activeActions.findIndex(action => {
+            const activeAction = state.activeActions.find(action => {
                 return action.name === actionName
             });
-            if(actionIndex !== -1){
-                return state.activeActions[actionIndex]
+            if(activeAction){
+                return activeAction
             }
             return null;
         }

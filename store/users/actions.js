@@ -3,7 +3,7 @@ import actions from './action-types';
 
 export default {
     async [actions.GET_CURRENT_USER]({commit}) {
-        const user = await this.$axios.$get('/getCurrentUser');
+        const user = await this.$axios.$get('/auth/user');
         commit(mutations.SET_CURRENT_USER, user)
     },
     [actions.AUTH_LOGIN]({commit}, payload) {

@@ -6,6 +6,7 @@ export default {
         password: "password",
         password_invalid: "Your password should be between 6 and 20 characters",
         password_incorrect: "Your password is incorrect",
+        non_required: "Non required example",
         login: "login",
     },
 }
