@@ -37,7 +37,7 @@ export default {
         }
     },
     Mutation: {
-        addUser: async (root, {firstName, lastName, email, userType, password}) => {
+        addUser: async (root, {firstName, lastName, email, role, password}) => {
 
             let errors = [];
             if (validator.isEmpty(firstName)) {
@@ -76,7 +76,7 @@ export default {
                 firstName,
                 lastName,
                 email,
-                userType,
+                role,
                 password: await bcrypt.hash(password, 10)
             });
             if (!newUser) {

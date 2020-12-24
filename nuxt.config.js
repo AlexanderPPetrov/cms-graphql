@@ -30,6 +30,7 @@ export default {
 
     modules: [
         '@nuxtjs/axios',
+        '@nuxtjs/apollo',
         'bootstrap-vue/nuxt',
         ['nuxt-i18n', i18nConfig],
     ],
@@ -38,6 +39,25 @@ export default {
         common: {
             'Accept': 'application/json, text/plain, */*'
         },
+    },
+    apollo: {
+        tokenName: "nuxt-apollo",
+        cookieAttributes: {
+            expires: 1
+        },
+        defaultOptions: {
+            $query: {
+                fetchPolicy: "network-only",
+                errorPolicy: "all"
+            }
+        },
+        watchLoading: "@/apollo/loadingHandler.js",
+        errorHandler: "@/apollo/errorHandler.js",
+        clientConfigs: {
+            default: {
+                httpEndpoint: process.env.GRAPHQL_BASE_URL
+            }
+        }
     },
     publicRuntimeConfig: {
         axios: {
@@ -65,5 +85,6 @@ export default {
     // Build Configuration (https://go.nuxtjs.dev/config-build)
     build: {
 
-    }
+    },
+    telemetry: false,
 }

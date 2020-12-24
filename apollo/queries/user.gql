@@ -1,0 +1,10 @@
+query user($_id: String!) {
+    user(_id: $_id) {
+        _id
+        firstName
+        lastName
+        role
+        lastLogin
+        createdAt
+    }
+}
