@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center vh-100 d-flex align-items-center">
-        <div class="col-md-4 col-xl-2 pb-5">
+        <div class="col-lg-4 pb-5">
                 <div class="d-flex justify-content-center pb-4">
                     <img src="~/assets/images/logo.jpg"/>
                 </div>

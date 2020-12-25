@@ -12,19 +12,16 @@ dotenv.config();
 
 export default {
     Query: {
-        user: (root, args) => {
-            return new Promise((resolve, reject) => {
-                User.findOne(args).exec((error, response) => {
-                    error ? reject(error) : resolve(response);
-                })
-            })
+        user: async (root, args) => {
+            const user = await User.findOne(args);
+            if(!user){
+                throw new Error('no user matched');
+            }
+            return user;
         },
-        users: () => {
-            return new Promise((resolve, reject) => {
-                User.find({}).populate().exec((error, response) => {
-                    error ? reject(error) : resolve(response);
-                })
-            })
+        users: async () => {
+            const users = await User.find({}).select("-password");
+            return users;
         },
         currentUser: async (root, args, {user}) => {
             if (!user) {
@@ -33,7 +30,8 @@ export default {
                     message: 'user_not_authenticated',
                 }])
             }
-            return await User.findById(user._id);
+            const currentUser = await User.findById(user._id);
+            return currentUser;
         }
     },
     Mutation: {
@@ -120,6 +118,7 @@ export default {
                 {
                     _id: user._id,
                     email: user.email,
+                    roles: user.roles,
                 },
                 process.env.JWT_SECRET,
                 {
@@ -134,7 +133,7 @@ export default {
                 })
             })
         },
-        editUser: async (root, {_id, firstName, lastName, password}, {user}) => {
+        editUser: async (root, {_id, firstName, lastName, password, roles}, {user}) => {
             if (!user) {
                 throw new Error("User is not authenticated");
             }
@@ -143,6 +142,7 @@ export default {
                     firstName,
                     lastName,
                     password,
+                    roles,
                 }
             }, {new: true}).exec();
             if (!response) {

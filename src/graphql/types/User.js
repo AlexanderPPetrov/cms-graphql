@@ -5,7 +5,7 @@ export default `
         firstName: String!
         lastName: String!
         email: String!
-        role: String!
+        roles: [String!]
         password: String!
         createdAt: Date!
         lastLogin: Date!
@@ -19,6 +19,6 @@ export default `
         addUser(firstName: String!, lastName: String!, email: String!, role: String!, password: String!): String
         login(email: String!, password: String!): String
         deleteUser(_id: String!): User
-        editUser(_id: String!, firstName: String!, lastName: String!, password: String!): User
+        editUser(_id: String!, firstName: String!, lastName: String!, password: String!, roles: [String!]): User
     }
 `

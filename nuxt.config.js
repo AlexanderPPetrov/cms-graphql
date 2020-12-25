@@ -41,10 +41,7 @@ export default {
         },
     },
     apollo: {
-        tokenName: "nuxt-apollo",
-        cookieAttributes: {
-            expires: 1
-        },
+        tokenName: "apollo-token",
         defaultOptions: {
             $query: {
                 fetchPolicy: "network-only",
@@ -53,6 +50,17 @@ export default {
         },
         watchLoading: "@/apollo/loadingHandler.js",
         errorHandler: "@/apollo/errorHandler.js",
+        authenticationType: 'Bearer',
+
+        // [deprecated] Enable the graphql-tag/loader to parse *.gql/*.graphql files
+        includeNodeModules: true,
+
+        // Cookie parameters used to store authentication token
+        cookieAttributes: {
+            expires: 1,
+            path: '/',
+            secure: false,
+        },
         clientConfigs: {
             default: {
                 httpEndpoint: process.env.GRAPHQL_BASE_URL

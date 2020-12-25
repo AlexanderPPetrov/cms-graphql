@@ -89,8 +89,7 @@
                     success: this.onLoginSuccess
                 });
             },
-            onLoginSuccess(user) {
-                console.log('logged with', user);
+            onLoginSuccess() {
                 this.$router.push({name: 'index___en'})
             }
         },

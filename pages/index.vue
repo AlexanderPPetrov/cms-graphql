@@ -1,6 +1,9 @@
 <template>
     <div class="row justify-content-center vh-100 d-flex align-items-center">
-        <div class="col-md-4 col-xl-2">
+        <div class="col-lg-4">
+            <div class="d-flex justify-content-end p-3">
+                <b-icon icon="box-arrow-in-right" class="ml-3" @click="onLogout"></b-icon>
+            </div>
             <b-list-group>
                 <b-list-group-item href="#" class="flex-column align-items-start" @click="$nuxt.refresh()">
                     <div class="d-flex w-100 justify-content-between">
@@ -8,13 +11,18 @@
                         <small class="text-muted">3 days ago</small>
                     </div>
 
-                    <p class="mb-1">
+                    <div class="mt-1 mb-3">
                         {{ getCurrentUser.email }}
-                    </p>
-
-                    <small class="text-muted">{{ getCurrentUser.role }}</small>
+                    </div>
+                    <div class="d-flex">
+                        <div class="d-flex align-items-center mr-2" v-for="role in getCurrentUser.roles" :key="role">
+                            <b-icon icon="file-earmark-person-fill" class="mr-1"></b-icon>
+                            <span class="text-muted">
+                                {{ role }}
+                            </span>
+                        </div>
+                    </div>
                 </b-list-group-item>
-
             </b-list-group>
         </div>
     </div>
@@ -37,6 +45,12 @@
                 return this.$store.state.users.currentUser
             }
         },
+        methods: {
+            async onLogout () {
+                await this.$apolloHelpers.onLogout();
+                await this.$router.push({name: 'login___en'})
+            },
+        }
 
     };
 </script>

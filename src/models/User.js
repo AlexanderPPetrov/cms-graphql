@@ -34,9 +34,9 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: 0,
     },
-    role: {
-        type: String,
-        default: 'user',
+    roles: {
+        type: [String],
+        default: ['user'],
     },
 });
 

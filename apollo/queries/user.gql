@@ -3,8 +3,7 @@ query user($_id: String!) {
         _id
         firstName
         lastName
-        role
-        lastLogin
-        createdAt
+        roles
+        email
     }
 }

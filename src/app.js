@@ -1,5 +1,5 @@
 import express from "express";
-const { graphqlHTTP } = require('express-graphql');
+import { graphqlHTTP } from "express-graphql";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from 'mongoose';
@@ -14,7 +14,7 @@ export const app = express();
 
 const auth = jwt({
     secret: process.env.JWT_SECRET,
-    algorithms: ['RS256'],
+    algorithms: ['HS256'],
     credentialsRequired: false,
 });
 
