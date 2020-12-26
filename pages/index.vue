@@ -38,11 +38,11 @@
             }
         },
         methods: {
-            onLogout () {
-                //TODO cookie is not removed in some cases
-                this.$apolloHelpers.onLogout().then(()=> {
-                    this.$router.push({name: 'login___en'})
-                })
+            async onLogout () {
+                await this.$apolloHelpers.onLogout().then(()=> {
+                    // For some reason using the router makes an endless call to auth.js
+                    window.location.href = '/login'
+                });
             },
         }
 

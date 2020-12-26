@@ -2,7 +2,7 @@
     "name": "cms",
     "version": "1.0.0",
     "private": true,
-    "main": "build/src/server.js",
+    "main": "build/server.js",
     "scripts": {
         "clean": "rimraf build && mkdir build",
         "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/server.js",
@@ -10,7 +10,7 @@
         "build-babel": "babel -d ./build ./src -s",
         "build:client": "nuxt build",
         "build:server": "npm run clean && npm run build-babel",
-        "start": "cross-env NODE_ENV=production node build/src/server.js",
+        "start": "cross-env NODE_ENV=production node build/server.js",
         "generate": "nuxt generate"
     },
     "dependencies": {
