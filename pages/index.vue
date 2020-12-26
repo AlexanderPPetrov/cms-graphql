@@ -1,15 +1,22 @@
 <template>
     <div class="row justify-content-center vh-100 d-flex align-items-center">
         <div class="col-lg-4">
-            <div class="d-flex justify-content-between p-3">
-                <b-icon icon="arrow-repeat" variant="primary" @click="$nuxt.refresh()"></b-icon>
-                <b-icon icon="box-arrow-in-right" variant="info" @click="onLogout"></b-icon>
+            <div class="d-flex justify-content-between mb-1">
+                <b-button size="sm" variant="primary"
+                          @click="$nuxt.refresh()"
+                          class="d-flex align-items-center justify-content-center">
+                    <b-icon icon="arrow-repeat"></b-icon>
+                </b-button>
+                <b-button size="sm" variant="dark"
+                          @click="onLogout"
+                          class="d-flex align-items-center justify-content-center">
+                    <b-icon icon="box-arrow-in-right"></b-icon>
+                </b-button>
             </div>
             <b-list-group>
                 <user v-for="user in getUsers"
                       :key="user._id"
-                      :user="user"
-                >
+                      :user="user">
                 </user>
             </b-list-group>
         </div>

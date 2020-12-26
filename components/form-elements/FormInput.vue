@@ -82,6 +82,7 @@
                 this.$emit('focus', value);
                 if(this.actionName){
                     this.clearServerError();
+                    this.v.$reset();
                 }
             },
 
