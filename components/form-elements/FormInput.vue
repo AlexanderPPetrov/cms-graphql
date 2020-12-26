@@ -69,7 +69,7 @@
         },
         watch: {
             getFieldError: function(value){
-                if(value){
+                if(value && this.v){
                     this.v.$touch();
                 }
             }
@@ -82,7 +82,9 @@
                 this.$emit('focus', value);
                 if(this.actionName){
                     this.clearServerError();
-                    this.v.$reset();
+                    if(this.v) {
+                        this.v.$reset();
+                    }
                 }
             },
 
