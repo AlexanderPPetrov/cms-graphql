@@ -20,8 +20,11 @@ export default {
     plugins: [
         '~/plugins/vuelidate',
         '~/plugins/api',
+        '~/plugins/apollo',
     ],
-
+    router: {
+        middleware: ['auth']
+    },
     // Auto import components (https://go.nuxtjs.dev/config-components)
     components: true,
 
@@ -48,8 +51,9 @@ export default {
                 errorPolicy: "all"
             }
         },
-        watchLoading: "@/apollo/loadingHandler.js",
-        errorHandler: "@/apollo/errorHandler.js",
+        watchLoading: "~/plugins/apollo-loading-handler.js",
+        errorHandler: '~/plugins/apollo-error-handler.js',
+
         authenticationType: 'Bearer',
 
         // [deprecated] Enable the graphql-tag/loader to parse *.gql/*.graphql files

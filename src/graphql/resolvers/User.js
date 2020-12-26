@@ -5,6 +5,7 @@ import jsonwebtoken from "jsonwebtoken";
 
 import validator from 'validator';
 import ValidationError from '../ValidationError';
+import {generateError} from '../helpers/ValidateErrorResponse';
 
 import dotenv from "dotenv";
 
@@ -36,38 +37,26 @@ export default {
     },
     Mutation: {
         addUser: async (root, {firstName, lastName, email, role, password}) => {
+            let fieldErrors = {};
 
-            let errors = [];
             if (validator.isEmpty(firstName)) {
-                errors.push({
-                    key: 'firstName',
-                    message: 'is_empty',
-                })
+                generateError(fieldErrors, 'firstName', firstName, 'is_empty');
             }
 
             if (validator.isEmpty(lastName)) {
-                errors.push({
-                    key: 'lastName',
-                    message: 'is_empty',
-                })
+                generateError(fieldErrors, 'lastName', lastName, 'is_empty');
             }
 
             if (!validator.isEmail(email)) {
-                errors.push({
-                    key: 'email',
-                    message: 'email_not_valid',
-                })
+                generateError(fieldErrors, 'email', email);
             }
 
             if (!validator.isLength(password, {min: 6, max: 20})) {
-                errors.push({
-                    key: 'password',
-                    message: 'password_length',
-                })
+                generateError(fieldErrors, 'password', password);
             }
 
-            if (errors.length) {
-                throw new ValidationError(errors);
+            if (Object.keys(fieldErrors).length) {
+                throw new ValidationError(fieldErrors);
             }
 
             const newUser = await new User({
@@ -85,33 +74,37 @@ export default {
                 savedUser = await newUser.save();
             } catch (e) {
                 if (e.code === 11000) {
-                    throw new ValidationError([{
-                        key: 'email',
-                        message: 'email_in_use',
-                    }]);
+                    generateError(fieldErrors, 'email', 'exists')
+                    throw new ValidationError(fieldErrors);
                 }
                 throw new Error(`Cannot create user ${email}`)
             }
-            return jsonwebtoken.sign({
-                    _id: newUser._id,
-                    email: newUser.email,
+            return jsonwebtoken.sign(
+                {
+                    _id: savedUser._id,
+                    email: savedUser.email,
+                    roles: savedUser.roles,
                 },
                 process.env.JWT_SECRET,
                 {
                     expiresIn: '1d'
-                });
+                }
+            )
 
         },
         login: async (root, {email, password}) => {
             const user = await User.findOne({email});
+            let fieldErrors = {};
             if (!user) {
-                throw new Error(`Cannot find user with email: ${email}`)
+                generateError(fieldErrors, 'email', email, 'does_not_exist');
+                throw new ValidationError(fieldErrors);
             }
 
             const valid = await bcrypt.compare(password, user.password);
 
             if (!valid) {
-                throw new Error(`Cannot match password for email: ${email}`)
+                generateError(fieldErrors, 'password', password, 'incorrect');
+                throw new ValidationError(fieldErrors);
             }
 
             return jsonwebtoken.sign(

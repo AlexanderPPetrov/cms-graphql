@@ -1,28 +1,16 @@
 <template>
     <div class="row justify-content-center vh-100 d-flex align-items-center">
         <div class="col-lg-4">
-            <div class="d-flex justify-content-end p-3">
-                <b-icon icon="box-arrow-in-right" class="ml-3" @click="onLogout"></b-icon>
+            <div class="d-flex justify-content-between p-3">
+                <b-icon icon="arrow-repeat" variant="primary" @click="$nuxt.refresh()"></b-icon>
+                <b-icon icon="box-arrow-in-right" variant="info" @click="onLogout"></b-icon>
             </div>
             <b-list-group>
-                <b-list-group-item href="#" class="flex-column align-items-start" @click="$nuxt.refresh()">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">{{ getCurrentUser.firstName }} {{ getCurrentUser.lastName }}</h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-
-                    <div class="mt-1 mb-3">
-                        {{ getCurrentUser.email }}
-                    </div>
-                    <div class="d-flex">
-                        <div class="d-flex align-items-center mr-2" v-for="role in getCurrentUser.roles" :key="role">
-                            <b-icon icon="file-earmark-person-fill" class="mr-1"></b-icon>
-                            <span class="text-muted">
-                                {{ role }}
-                            </span>
-                        </div>
-                    </div>
-                </b-list-group-item>
+                <user v-for="user in getUsers"
+                      :key="user._id"
+                      :user="user"
+                >
+                </user>
             </b-list-group>
         </div>
     </div>
@@ -31,24 +19,30 @@
 <script>
     import actions from '../store/users/action-types'
     import LoginForm from '../components/forms/LoginForm';
+    import User from '../components/User';
 
     export default {
-        name: 'gb-main-categories-chart-wrapper',
         components: {
             LoginForm,
+            User,
         },
         async fetch({ store }){
-            await store.dispatch(`users/${actions.GET_CURRENT_USER}`);
+            await store.dispatch(`users/${actions.GET_USERS}`);
         },
         computed: {
             getCurrentUser(){
                 return this.$store.state.users.currentUser
+            },
+            getUsers(){
+                return this.$store.state.users.users;
             }
         },
         methods: {
-            async onLogout () {
-                await this.$apolloHelpers.onLogout();
-                await this.$router.push({name: 'login___en'})
+            onLogout () {
+                //TODO cookie is not removed in some cases
+                this.$apolloHelpers.onLogout().then(()=> {
+                    this.$router.push({name: 'login___en'})
+                })
             },
         }
 

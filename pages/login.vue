@@ -13,7 +13,6 @@
     import LoginForm from '../components/forms/LoginForm';
 
     export default {
-        name: 'gb-main-categories-chart-wrapper',
         components: {
             LoginForm,
         },

@@ -1,36 +1,41 @@
 import mutations from './mutation-types';
 import actions from './action-types';
-import getUser from "~/apollo/queries/user.gql";
+import {user, users, currentUser} from "~/apollo/queries/user.gql";
 import login from "~/apollo/mutations/login.gql";
 
 export default {
     async [actions.GET_CURRENT_USER]({commit}) {
-        const apollo = this.app.apolloProvider.defaultClient;
-        const response = await apollo
-            .query({
-                query: getUser,
-                variables: {
-                    _id: '5fddaaf8c6a1ce4f0c385dc1'
-                }
+        const response = await this.$apollo.query(
+            actions.GET_CURRENT_USER,
+            {
+                query: currentUser,
+                fetchPolicy: 'no-cache',
             });
-        commit(mutations.SET_CURRENT_USER, response.data.user)
+        return response.data.currentUser
+    },
+    async [actions.GET_USERS]({commit}) {
+        const response = await this.$apollo.query(
+            actions.GET_USERS,
+            {
+                query: users,
+                fetchPolicy: "no-cache",
+            });
+        commit(mutations.SET_USERS, response.data.users);
     },
     async [actions.AUTH_LOGIN]({commit}, payload) {
-        const apollo = this.app.apolloProvider.defaultClient;
-        try {
-            const response = await apollo.mutate(
-                {
-                    mutation: login,
-                    variables: payload.data
-                })
-            await this.$apolloHelpers.onLogin(response.data.login).then(() => {
-                if(payload.success){
-                    payload.success(response)
-                }
+        const response = await this.$apollo.mutate(
+            actions.AUTH_LOGIN,
+            {
+                mutation: login,
+                variables: payload.data
             })
 
-        } catch (e) {
-            console.error(e)
+        if(response){
+            console.log('response',response);
+            await this.$apolloHelpers.onLogin(response.data.login, undefined, { expires: 1 })
+            if(payload.success){
+                payload.success(response)
+            }
         }
 
     }

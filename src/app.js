@@ -50,10 +50,8 @@ app.use(
             customFormatErrorFn: error => {
                 if (error.originalError instanceof ValidationError) {
                     return {
-                        message: error.mesage,
+                        message: error.message,
                         validationErrors: error.originalError && error.originalError.validationErrors,
-                        // locations: error.locations,
-                        // path: error.path
                     }
                 }
                 return error

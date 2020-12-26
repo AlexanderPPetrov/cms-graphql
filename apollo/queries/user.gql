@@ -7,3 +7,21 @@ query user($_id: String!) {
         email
     }
 }
+query users{
+    users {
+        _id
+        firstName
+        lastName
+        roles
+        email
+    }
+}
+query currentUser {
+    currentUser {
+        _id
+        firstName
+        lastName
+        roles
+        email
+    }
+}
