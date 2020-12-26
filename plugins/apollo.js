@@ -26,40 +26,28 @@ export default function ({app, store, redirect}, inject) {
                 console.log('you need to provide apollo options')
                 return;
             }
-            if(!process.server){
+            if (!process.server) {
                 store.commit(`network/${mutations.ADD_ACTIVE_ACTION}`, data.action);
                 store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, data.action);
             }
-
-            const response = await $apolloMethod(data.options)
-                .then(() => {
-                    if(!process.server){
-                        store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, data.action);
+            try {
+                const response = await $apolloMethod(data.options)
+                return response;
+            } catch (error) {
+                if (!process.server) {
+                    if (error.graphQLErrors) {
+                        error.graphQLErrors.forEach(error => {
+                            if (error.message === 'validation_error') {
+                                store.commit(`network/${mutations.ADD_RESPONSE_ERROR}`, {
+                                    name: data.action,
+                                    error: error.validationErrors,
+                                });
+                            }
+                        })
                     }
-                })
-                .catch(error => {
-                    console.log(error.graphQLErrors)
-                    if(!process.server){
-                        if (error.graphQLErrors) {
-                            error.graphQLErrors.forEach(error => {
-                                if(error.message === 'validation_error'){
-                                    store.commit(`network/${mutations.ADD_RESPONSE_ERROR}`, {
-                                        name: data.action,
-                                        error: error.validationErrors,
-                                    });
-                                }
-                            })
-
-                        }
-                    }
-
-                }).finally(()=> {
-                    if(!process.server){
-                        store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, data.action);
-                    }
-                })
-
-            return response;
+                    store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, data.action);
+                }
+            }
         },
 
     };

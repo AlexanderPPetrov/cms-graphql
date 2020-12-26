@@ -70,7 +70,7 @@
         watch: {
             getFieldError: function(value){
                 if(value){
-                    this.$v.$touch();
+                    this.v.$touch();
                 }
             }
         },

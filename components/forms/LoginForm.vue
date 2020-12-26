@@ -6,6 +6,7 @@
                     v-bind:email.sync="form.email"
                     :placeholder="$t('user.email')"
                     :invalidFeedback="$t('user.email_invalid')"
+                    :actionName="getActionName"
                     :v="$v.form.email"></form-input>
         <form-input fieldName="password"
                     type="password"
@@ -13,9 +14,11 @@
                     v-bind:password.sync="form.password"
                     :placeholder="$t('user.password')"
                     :invalidFeedback="$t('user.password_invalid')"
+                    :actionName="getActionName"
                     :v="$v.form.password"></form-input>
         <form-input fieldName="nonRequired"
                     :value="form.nonRequired"
+                    :actionName="getActionName"
                     v-bind:nonRequired.sync="form.nonRequired"
                     :placeholder="$t('user.non_required')"
                     ></form-input>
@@ -50,6 +53,11 @@
                     nonRequired: '',
                 }
             };
+        },
+        computed: {
+            getActionName(){
+                return actions.AUTH_LOGIN
+            }
         },
         validations: {
             form: {
