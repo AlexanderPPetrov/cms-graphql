@@ -16,13 +16,6 @@
                     :invalidFeedback="$t('user.password_invalid')"
                     :actionName="getActionName"
                     :v="$v.form.password"></form-input>
-        <form-input fieldName="nonRequired"
-                    :value="form.nonRequired"
-                    :actionName="getActionName"
-                    v-bind:nonRequired.sync="form.nonRequired"
-                    :placeholder="$t('user.non_required')"
-                    ></form-input>
-
         <b-button ref="loginButton"
                   type="submit"
                   variant="primary"
@@ -50,7 +43,6 @@
                 form: {
                     email: '',
                     password: '',
-                    nonRequired: '',
                 }
             };
         },
