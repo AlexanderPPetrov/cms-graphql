@@ -1,6 +1,6 @@
 <template>
 
-    <b-list-group-item href="#" class="flex-column align-items-start" @click="$nuxt.refresh()">
+    <b-list-group-item href="#" class="flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{ user.firstName }} {{ user.lastName }}</h5>
             <small class="text-muted">3 days ago</small>
