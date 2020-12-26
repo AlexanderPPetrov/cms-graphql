@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-center vh-100 d-flex align-items-center">
         <div class="col-lg-4">
-            <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex justify-content-between mb-3">
                 <b-button size="sm" variant="primary"
                           @click="$nuxt.refresh()"
                           class="d-flex align-items-center justify-content-center">
