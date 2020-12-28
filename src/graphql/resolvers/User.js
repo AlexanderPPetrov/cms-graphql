@@ -15,7 +15,7 @@ export default {
     Query: {
         user: async (root, args) => {
             const user = await User.findOne(args);
-            if(!user){
+            if (!user) {
                 throw new Error('no user matched');
             }
             return user;
@@ -119,18 +119,15 @@ export default {
                 }
             )
         },
-        deleteUser: (root, {_id}) => {
-            return new Promise((resolve, reject) => {
-                User.findByIdAndRemove({_id}).exec((error, response) => {
-                    error ? reject(error) : resolve(response);
-                })
-            })
+        deleteUser: async (root, {_id}) => {
+            const user = await User.findByIdAndRemove(_id).exec();
+            return user;
         },
         editUser: async (root, {_id, firstName, lastName, password, roles}, {user}) => {
             if (!user) {
                 throw new Error("User is not authenticated");
             }
-            const response = await User.findByIdAndUpdate({_id}, {
+            const response = await User.findByIdAndUpdate(_id, {
                 $set: {
                     firstName,
                     lastName,
