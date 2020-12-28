@@ -3,110 +3,73 @@ import mutations from "../store/network/mutation-types";
 export default function ({$axios, store, redirect}, inject) {
 
     const CancelToken = $axios.CancelToken;
+
     const api = {
-        get(action, url, params, success, failure, done, repeatTime = 0, executeInitially = true) {
-            this.request({
-                method: 'get',
-                url,
+        async get(action, url, data) {
+            const response = await this.request({
                 action,
-                params,
-                success,
-                failure,
-                done,
-                repeatTime,
-                executeInitially,
+                url,
+                data,
             }, $axios.$get);
+            return response;
         },
-        post(action, url, params, success, failure, done, repeatTime = 0, executeInitially = true) {
-            this.request({
-                method: 'post',
-                url,
+        async post(action, url, data) {
+            const response = await this.request({
                 action,
-                params,
-                success,
-                failure,
-                done,
-                repeatTime,
-                executeInitially,
+                url,
+                data,
             }, $axios.$post);
+            return response;
         },
-        put(action, url, params, success, failure, done) {
-            this.request({
-                method: 'put',
-                url,
+        async put(action, url, data) {
+            const response = await this.request({
                 action,
-                params,
-                success,
-                failure,
-                done,
+                url,
+                data,
             }, $axios.$put);
+            return response;
         },
-        delete(action, url, params, success, failure, done) {
-            this.request({
-                method: 'delete',
-                url,
+        async delete(action, url, data) {
+            const response = await this.request({
                 action,
-                params,
-                success,
-                failure,
-                done,
+                url,
+                data,
             }, $axios.$delete);
+            return response;
         },
-        request: (options = {}, $axiosMethod) => {
+
+        request: async (options = {}, $axiosMethod) => {
+            if (typeof options.action !== 'string') {
+                console.log('action must be a string');
+                return;
+            }
             if (!options.url) {
-                console.log('URL is required');
+                console.log('you need to provide url');
                 return;
             }
-            const requestOptions = Object.assign({}, options);
 
-            if (options.params && options.params.external) {
-                baseURL = '';
-            }
-            const data = Object.assign({
-                method: 'get',
-            }, options);
-
-            const activeRequest = store.state.network.activeActions.find(action => action.name === options.action);
-            let timeExecuted = 0;
-            if (activeRequest) {
-                activeRequest.cancel(`Cancel previous call for: ${options.action}`);
-                if (activeRequest.repeatTimeout) {
-                    timeExecuted = activeRequest.timeExecuted;
+            if (!process.server) {
+                const activeRequest = store.state.network.activeActions.find(action => action.name === options.action);
+                if (activeRequest) {
+                    activeRequest.cancel(`Cancel previous call for: ${options.action}`);
+                    store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, options.action);
                 }
-                store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, options.action);
+
+                options.cancelToken = new CancelToken(function executor(cancel) {
+                    let action = {
+                        name: options.action,
+                        cancel,
+                    };
+                    store.commit(`network/${mutations.ADD_ACTIVE_ACTION}`, action);
+                });
             }
 
-            data.cancelToken = new CancelToken(function executor(cancel) {
-                let action = {
-                    name: data.action,
-                    cancel,
-                    timeExecuted
-                };
-                store.commit(`network/${mutations.ADD_ACTIVE_ACTION}`, action);
-            });
-
-            store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, options.action);
-
-            if (!options.executeInitially) {
-                requestOptions.executeInitially = true;
-                api.requestWithTimeout(requestOptions);
-                return;
-            }
-
-            $axiosMethod(data.url, data.params)
-                .then(response => {
-                    if (options.success) {
-                        options.success(response);
-                    }
-                    if (options.done) {
-                        options.done(response)
-                    }
-                    api.requestWithTimeout(requestOptions);
-
-                })
-                .catch(error => {
+            try {
+                const response = await $axiosMethod(options.url, options.data)
+                return response;
+            } catch (error) {
+                if (!process.server) {
                     const code = parseInt(error.response && error.response.status)
-
                     // 422 - Fields validation error
                     if (code === 422) {
                         store.commit(`network/${mutations.ADD_RESPONSE_ERROR}`, {
@@ -114,41 +77,11 @@ export default function ({$axios, store, redirect}, inject) {
                             error: error.response.data,
                         });
                     }
-                    if (options.failure) {
-                        options.failure(error);
-                    }
-                    if (options.done) {
-                        options.done(error)
-                    }
-                    api.requestWithTimeout(requestOptions);
-                });
-        },
-        requestWithTimeout: options => {
-            if (options.repeatTime) {
-                const index = store.state.network.activeActions.findIndex(action => action.name === options.action);
-                if (index === -1) {
-                    // Return if the request was already removed from activeActions
-                    return;
+                    store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, options.action);
                 }
-                let action = store.state.network.activeActions[index];
-                const repeatTimeout = setTimeout(() => {
-                    api.request(options);
-                }, options.repeatTime);
-
-                action = Object.assign({}, action, {repeatTimeout});
-                action.timeExecuted = action.timeExecuted + 1;
-                store.commit(`network/${mutations.UPDATE_ACTIVE_ACTION}`, {index, action});
-            } else {
-                store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, options.action);
             }
         },
-        clearRequest: actionName => {
-            const activeRequest = store.state.network.activeActions.find(action => action.name === actionName);
-            if (activeRequest) {
-                clearTimeout(activeRequest.repeatTimeout);
-            }
-            store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, actionName);
-        }
+
     };
 
     // Inject to context as $api
