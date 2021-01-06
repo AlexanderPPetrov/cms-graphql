@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-content>
+        <v-main>
             <v-container fluid fill-height class="pa-0">
                 <v-row no-gutters>
                     <div class="primary lighten-5 main-part d-none d-md-none d-lg-flex col col-7"></div>
@@ -9,7 +9,7 @@
                     </div>
                 </v-row>
             </v-container>
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 
