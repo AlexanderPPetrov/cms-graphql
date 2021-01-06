@@ -1,23 +1,20 @@
 <template>
-    <b-form-group :label="label">
-        <b-form-input :type="type"
-                      @input="formInputFieldOnInput"
-                      @focus="formInputFieldOnFocus"
-                      :value="value"
-                      :state="getState"
-                      :placeholder="placeholder">
-        </b-form-input>
-        <b-form-invalid-feedback v-if="invalidFeedback" :state="getState">
-            {{ getInvalidFeedback }}
-        </b-form-invalid-feedback>
-    </b-form-group>
+    <v-text-field
+        :value="value"
+        :error-messages="getInvalidFeedback"
+        :label="label"
+        required
+        :type="type"
+        @input="formInputFieldOnInput"
+        @focus="formInputFieldOnFocus"
+    ></v-text-field>
 </template>
 
 <script>
     import mutations from '../../store/network/mutation-types';
 
     export default {
-        name: 'cl-form-input',
+        name: 'form-input',
         props: {
             label: {
                 type: String
@@ -47,12 +44,6 @@
             actionName: String,
         },
         computed: {
-            getState() {
-                if (this.v && this.v.$error) {
-                    return false;
-                }
-                return null;
-            },
             getFieldError() {
                 const fieldError = this.$store.getters['network/getFieldError'](this.actionName, this.fieldName);
                 if (fieldError) {
@@ -64,7 +55,10 @@
                 if(this.getFieldError){
                     return this.getFieldError
                 }
-                return this.invalidFeedback
+                if(this.v && this.v.$error){
+                    return this.invalidFeedback
+                }
+                return ''
             }
         },
         watch: {

@@ -1,10 +1,12 @@
 <template>
-    <v-card class="login-container p-3">
-        <v-flex class="d-flex justify-center align-center">
-            <img src="~/assets/images/logo.png" width="56px"/>
-        </v-flex>
-        <login-form></login-form>
-    </v-card>
+    <div class="login-container">
+        <div class="d-flex justify-center align-center mb-12">
+            <img src="~/assets/images/logo.png" width="170px"/>
+        </div>
+        <v-card class="px-8 py-7">
+            <login-form></login-form>
+        </v-card>
+    </div>
 </template>
 
 <script>
