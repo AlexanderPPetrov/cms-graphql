@@ -21,6 +21,7 @@
                             :v="$v.form.password"></form-input>
                 <v-btn
                     block
+                    rounded
                     color="primary"
                     class="mt-6"
                     elevation="2"
