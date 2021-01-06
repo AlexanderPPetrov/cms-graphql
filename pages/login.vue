@@ -1,18 +1,17 @@
 <template>
-    <div class="justify-content-center vh-100 d-flex align-items-center">
-        <div class="login-container">
-            <div class="d-flex justify-content-center pb-4">
-                <img src="~/assets/images/logo_graph.png"/>
-            </div>
-            <login-form></login-form>
-        </div>
-    </div>
+    <v-card class="login-container p-3">
+        <v-flex class="d-flex justify-center align-center">
+            <img src="~/assets/images/logo.png" width="56px"/>
+        </v-flex>
+        <login-form></login-form>
+    </v-card>
 </template>
 
 <script>
     import LoginForm from '../components/forms/LoginForm';
 
     export default {
+        layout: 'login',
         components: {
             LoginForm,
         },
