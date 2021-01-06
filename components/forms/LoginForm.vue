@@ -2,7 +2,7 @@
     <v-row>
         <v-col class="d-flex align-center justify-center" cols="12">{{ $t('user.log_in_to_your_account') }}</v-col>
         <v-col cols="12">
-            <form @submit="onLogin"
+            <v-form @submit="onLogin"
                   autocomplete="off">
                 <form-input fieldName="email"
                             :value="form.email"
@@ -22,6 +22,7 @@
                 <v-btn
                     block
                     rounded
+                    type="submit"
                     color="primary"
                     class="mt-6"
                     elevation="2"
@@ -30,7 +31,7 @@
                 >
                     {{ this.$t('user.login') }}
                 </v-btn>
-            </form>
+            </v-form>
         </v-col>
     </v-row>
 
