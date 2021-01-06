@@ -1,30 +1,33 @@
 <template>
-    <b-form @submit="onLogin"
-            autocomplete="off">
-        <form-input fieldName="email"
-                    :value="form.email"
-                    v-bind:email.sync="form.email"
-                    :placeholder="$t('user.email')"
-                    :invalidFeedback="$t('user.email_invalid')"
-                    :actionName="getActionName"
-                    :v="$v.form.email"></form-input>
-        <form-input fieldName="password"
-                    type="password"
-                    :value="form.password"
-                    v-bind:password.sync="form.password"
-                    :placeholder="$t('user.password')"
-                    :invalidFeedback="$t('user.password_invalid')"
-                    :actionName="getActionName"
-                    :v="$v.form.password"></form-input>
-        <b-button ref="loginButton"
-                  type="submit"
-                  variant="primary"
-                  class="text-uppercase"
-                  block
-        >
-            {{ this.$t('user.login') }}
-        </b-button>
-    </b-form>
+<!--    <b-form @submit="onLogin"-->
+<!--            autocomplete="off">-->
+<!--        <form-input fieldName="email"-->
+<!--                    :value="form.email"-->
+<!--                    v-bind:email.sync="form.email"-->
+<!--                    :placeholder="$t('user.email')"-->
+<!--                    :invalidFeedback="$t('user.email_invalid')"-->
+<!--                    :actionName="getActionName"-->
+<!--                    :v="$v.form.email"></form-input>-->
+<!--        <form-input fieldName="password"-->
+<!--                    type="password"-->
+<!--                    :value="form.password"-->
+<!--                    v-bind:password.sync="form.password"-->
+<!--                    :placeholder="$t('user.password')"-->
+<!--                    :invalidFeedback="$t('user.password_invalid')"-->
+<!--                    :actionName="getActionName"-->
+<!--                    :v="$v.form.password"></form-input>-->
+<!--        <b-button ref="loginButton"-->
+<!--                  type="submit"-->
+<!--                  variant="primary"-->
+<!--                  class="text-uppercase"-->
+<!--                  block-->
+<!--        >-->
+<!--            {{ this.$t('user.login') }}-->
+<!--        </b-button>-->
+<!--    </b-form>-->
+    <div>
+        asd
+    </div>
 </template>
 
 <script>

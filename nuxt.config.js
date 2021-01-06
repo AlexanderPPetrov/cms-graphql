@@ -29,12 +29,14 @@ export default {
     components: true,
 
     // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-    buildModules: [],
+    buildModules: [
+        '@nuxtjs/vuetify',
+        '@nuxtjs/pwa',
+    ],
 
     modules: [
         '@nuxtjs/axios',
         '@nuxtjs/apollo',
-        'bootstrap-vue/nuxt',
         ['nuxt-i18n', i18nConfig],
     ],
     axios: {
@@ -81,11 +83,7 @@ export default {
             baseURL: process.env.API_BASE_URL
         }
     },
-    bootstrapVue: {
-        bootstrapCSS: false,
-        bootstrapVueCSS: false,
-        icons: true,
-    },
+
     module: {
         rules: [
             {
