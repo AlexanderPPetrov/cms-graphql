@@ -23,7 +23,7 @@
 <script>
 
 export default {
-    name: 'user-list-group-item',
+    name: 'user',
     props: {
         user: Object,
     },

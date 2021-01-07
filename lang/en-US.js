@@ -9,6 +9,11 @@ export default {
         password_incorrect: "Your password is incorrect",
         login: "Login",
         log_in_to_your_account: "Log in to your account",
+        firstName: "First Name",
+        lastName: "Last Name",
+        roles: "User roles",
+        createdAt: "Created at",
+        lastLogin: "Last login",
     },
     drawer: {
         dashboard: 'Dashboard',

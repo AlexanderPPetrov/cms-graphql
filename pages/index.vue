@@ -1,57 +1,11 @@
 <template>
-    <div class="row justify-content-center vh-100 d-flex align-items-center">
-        <div class="col-lg-4">
-            <div class="d-flex justify-content-between mb-3">
-                <b-button size="sm" variant="primary"
-                          @click="$nuxt.refresh()"
-                          class="d-flex align-items-center justify-content-center">
-                    <b-icon icon="arrow-repeat"></b-icon>
-                </b-button>
-                <b-button size="sm" variant="dark"
-                          @click="onLogout"
-                          class="d-flex align-items-center justify-content-center">
-                    <b-icon icon="box-arrow-in-right"></b-icon>
-                </b-button>
-            </div>
-            <b-list-group>
-                <user v-for="user in getUsers"
-                      :key="user._id"
-                      :user="user">
-                </user>
-            </b-list-group>
-        </div>
+    <div>
+        TODO
     </div>
 </template>
 
 <script>
-    import actions from '../store/users/action-types'
-    import LoginForm from '../components/forms/LoginForm';
-    import User from '../components/User';
-
     export default {
-        components: {
-            LoginForm,
-            User,
-        },
-        async fetch({ store }){
-            await store.dispatch(`users/${actions.GET_USERS}`);
-        },
-        computed: {
-            getCurrentUser(){
-                return this.$store.state.users.currentUser
-            },
-            getUsers(){
-                return this.$store.state.users.users;
-            }
-        },
-        methods: {
-            async onLogout () {
-                await this.$apolloHelpers.onLogout().then(()=> {
-                    // For some reason using the router makes an endless call to auth.js
-                    window.location.href = '/login'
-                });
-            },
-        }
 
     };
 </script>
