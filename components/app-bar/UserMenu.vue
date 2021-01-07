@@ -1,7 +1,8 @@
 <template>
     <v-menu
-        left
-        bottom
+        offset-y
+        origin="center center"
+        transition="scale-transition"
     >
         <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -12,7 +13,7 @@
                 <v-icon color="primary" large>mdi-account-circle</v-icon>
             </v-btn>
         </template>
-        <v-list>
+        <v-list class="pa-0">
             <v-list-item link @click="onLogout">
                 <v-list-item-title>Logout</v-list-item-title>
             </v-list-item>
