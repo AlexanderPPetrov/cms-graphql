@@ -20,10 +20,7 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-        <v-app-bar light fixed app>
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-            <v-toolbar-title>Application</v-toolbar-title>
-        </v-app-bar>
+        <app-bar @toggleDrawer="drawer = !drawer"></app-bar>
         <v-main>
             <v-container fluid fill-height>
                 <v-layout justify-center align-center>
@@ -37,7 +34,12 @@
 </template>
 
 <script>
+import AppBar from '../components/app-bar/AppBar';
+
 export default {
+    components: {
+        AppBar
+    },
     data() {
         return {
             drawer: null

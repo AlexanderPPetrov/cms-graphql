@@ -1,6 +1,11 @@
-// src/sass/variables.scss
+$material-light: (
+    'background': #fff,
+);
 
-// Globals
-$border-radius-root: 6px;
-$font-size-root: 14px;
+
+// App bar
+$app-bar-elevation: 1 !default;
+
+// Card
+$card-elevation: 3 !default;
 

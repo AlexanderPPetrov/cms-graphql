@@ -1,6 +1,8 @@
 <template>
     <v-row>
-        <v-col class="d-flex align-center justify-center" cols="12">{{ $t('user.log_in_to_your_account') }}</v-col>
+        <v-col class="d-flex align-center justify-center text-subtitle-2">
+            {{ $t('user.log_in_to_your_account') }}
+        </v-col>
         <v-col cols="12">
             <v-form @submit="onLogin"
                   autocomplete="off">
