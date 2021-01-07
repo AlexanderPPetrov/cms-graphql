@@ -8,7 +8,7 @@ export const actions = {
            if(!currentUser){
                // If there is a token but it's not valid for some reason
                await this.$apolloHelpers.onLogout();
-               await this.$router.push({name: 'login___en'})
+               await this.$router.push(this.localePath({name: "login"}));
            }
        }
     }

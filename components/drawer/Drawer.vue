@@ -3,25 +3,28 @@
         <v-list dense>
             <v-list-group
                 v-for="item in drawerItems"
-                :key="item.title"
-                v-model="item.active"
+                :key="item.navKey"
+                :value="isActiveCategory(item.navKey)"
                 :prepend-icon="item.icon"
                 :append-icon="item.items && item.items.length ? 'mdi-menu-down' : null"
                 no-action
+                @click="parentOnClick(item)"
             >
                 <template v-slot:activator>
                     <v-list-item-content>
-                        <v-list-item-title v-text="$t(`drawer.${item.title}`)"></v-list-item-title>
+                        <v-list-item-title v-text="$t(`drawer.${item.navKey}`)"></v-list-item-title>
                     </v-list-item-content>
                 </template>
 
                 <v-list-item
                     v-for="child in item.items"
-                    :key="child.title"
+                    :key="child.navKey"
                     link
+                    :value="isActiveSubcategory(child.navKey)"
+                    :to="getLink(item, child)" nuxt
                 >
                     <v-list-item-content>
-                        <v-list-item-title v-text="$t(`drawer.${child.title}`)"></v-list-item-title>
+                        <v-list-item-title v-text="$t(`drawer.${child.navKey}`)"></v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list-group>
@@ -31,105 +34,133 @@
 
 <script>
 
-export default {
-    name: 'drawer',
-    data() {
-        return {
-            drawerItems: [
-                {
-                    active: true,
-                    title: 'dashboard',
-                    icon: 'mdi-chart-box-outline',
-                },
-                {
-                    title: 'crm',
-                    icon: 'mdi-account-supervisor-outline',
-                    items: [
-                        {title: 'members_list'},
-                    ],
-                },
-                {
-                    title: 'payments',
-                    icon: 'mdi-credit-card-check-outline',
-                    items: [
-                        {title: 'payments_list'},
-                        {title: 'payment_methods'},
-                    ],
-                },
-                {
-                    title: 'sport',
-                    icon: 'mdi-soccer',
-                    items: [
-                        {title: 'sports_bet_list'},
-                        {title: 'results'},
-                        {title: 'sport_management'},
-                        {title: 'leagues_management'},
-                        {title: 'bet_monitor'},
-                        {title: 'leagues_favorites'},
-                    ],
-                },
-                {
-                    title: 'casino',
-                    icon: 'mdi-dice-5-outline',
-                    items: [
-                        {title: 'casino_bet_list'},
-                        {title: 'categories'},
-                    ],
-                },
-                {
-                    title: 'reports',
-                    icon: 'mdi-file-chart-outline',
-                    items: [
-                        {title: 'sports_win_loss'},
-                        {title: 'casino_win_loss'},
-                        {title: 'daily_report'},
-                        {title: 'monthly_indicator'},
-                        {title: 'sports_report'},
-                        {title: 'leagues_report'},
-                        {title: 'markets_report'},
-                        {title: 'casino_report'},
-                    ],
-                },
-                {
-                    title: 'cms',
-                    icon: 'mdi-application-cog',
-                    items: [
-                        {title: 'tickers_list'},
-                        {title: 'carousels_list'},
-                        {title: 'content_list'},
-                        {title: 'email_list'},
-                        {title: 'promotions'},
-                    ],
-                },
-                {
-                    title: 'marketing',
-                    icon: 'mdi-finance',
-                    items: [
-                        {title: 'coupon_list'},
-                        {title: 'campaign_list'},
-                        {title: 'report_overview_list'},
-                        {title: 'report_free_bet_list'},
-                        {title: 'coefficient_list'},
-                        {title: 'content_page_list'},
-                        {title: 'report_cashback'},
-                    ],
-                },
-                {
-                    title: 'antifraud',
-                    icon: 'mdi-shield-account-variant-outline',
-                    items: [
-                        {title: 'linked_report'},
-                        {title: 'anti_fraud_overall'},
-                    ],
-                },
-            ],
+    export default {
+        name: 'drawer',
+        data() {
+            return {
+                drawerItems: [
+                    {
+                        active: true,
+                        navKey: 'dashboard',
+                        icon: 'mdi-chart-box-outline',
+                    },
+                    {
+                        navKey: 'crm',
+                        icon: 'mdi-account-supervisor-outline',
+                        items: [
+                            {navKey: 'members_list'},
+                        ],
+                    },
+                    {
+                        navKey: 'payments',
+                        icon: 'mdi-credit-card-check-outline',
+                        items: [
+                            {navKey: 'payments_list'},
+                            {navKey: 'payment_methods'},
+                        ],
+                    },
+                    {
+                        navKey: 'sport',
+                        icon: 'mdi-soccer',
+                        items: [
+                            {navKey: 'sports_bet_list'},
+                            {navKey: 'results'},
+                            {navKey: 'sport_management'},
+                            {navKey: 'leagues_management'},
+                            {navKey: 'bet_monitor'},
+                            {navKey: 'leagues_favorites'},
+                        ],
+                    },
+                    {
+                        navKey: 'casino',
+                        icon: 'mdi-dice-5-outline',
+                        items: [
+                            {navKey: 'casino_bet_list'},
+                            {navKey: 'categories'},
+                        ],
+                    },
+                    {
+                        navKey: 'reports',
+                        icon: 'mdi-file-chart-outline',
+                        items: [
+                            {navKey: 'sports_win_loss'},
+                            {navKey: 'casino_win_loss'},
+                            {navKey: 'daily_report'},
+                            {navKey: 'monthly_indicator'},
+                            {navKey: 'sports_report'},
+                            {navKey: 'leagues_report'},
+                            {navKey: 'markets_report'},
+                            {navKey: 'casino_report'},
+                        ],
+                    },
+                    {
+                        navKey: 'cms',
+                        icon: 'mdi-application-cog',
+                        items: [
+                            {navKey: 'tickers_list'},
+                            {navKey: 'carousels_list'},
+                            {navKey: 'content_list'},
+                            {navKey: 'email_list'},
+                            {navKey: 'promotions'},
+                        ],
+                    },
+                    {
+                        navKey: 'marketing',
+                        icon: 'mdi-finance',
+                        items: [
+                            {navKey: 'coupon_list'},
+                            {navKey: 'campaign_list'},
+                            {navKey: 'report_overview_list'},
+                            {navKey: 'report_free_bet_list'},
+                            {navKey: 'coefficient_list'},
+                            {navKey: 'content_page_list'},
+                            {navKey: 'report_cashback'},
+                        ],
+                    },
+                    {
+                        navKey: 'antifraud',
+                        icon: 'mdi-shield-account-variant-outline',
+                        items: [
+                            {navKey: 'linked_report'},
+                            {navKey: 'anti_fraud_overall'},
+                        ],
+                    },
+                ],
 
-        }
-    },
-    computed: {
-        drawerOpened(){
-            return this.$store.state.application.drawerOpened
+            }
+        },
+        computed: {
+            drawerOpened() {
+                return this.$store.state.application.drawerOpened
+            },
+        },
+        methods: {
+            getLink(item, child) {
+                const parentLink = item.navKey;
+                const childLink = child.navKey.replace(/_/g, "-");
+                return `/${parentLink}/${childLink}`
+            },
+            parentOnClick(item) {
+                if (item.navKey === 'dashboard') {
+                    this.$router.push(this.localePath({name: "index"}));
+                }
+            },
+            getActiveCategory(index){
+                if(this.$route.path === '/'){
+                    return 'dashboard';
+                }
+                const itemsInRoute = this.$route.path.split('/');
+                if(itemsInRoute[index]){
+                    return itemsInRoute[index]
+                }
+                return '';
+            },
+            isActiveCategory(navKey) {
+                return navKey === this.getActiveCategory(1);
+            },
+            isActiveSubcategory(navKey){
+                return navKey === this.getActiveCategory(2);
+            }
         }
     }
-}
 </script>

@@ -101,7 +101,7 @@ export default {
             });
         },
         onLoginSuccess() {
-            this.$router.push({name: 'index___en'})
+            this.$router.push(this.localePath({name: "index"}));
         }
     },
 
