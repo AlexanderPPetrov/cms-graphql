@@ -1,7 +1,7 @@
 import mutations from "../store/network/mutation-types";
 
 export default function ({app, store, redirect}, inject) {
-    const apolloClient = app.apolloProvider.defaultClient
+    const apolloClient = app.apolloProvider.defaultClient;
     const apollo = {
         async query(action, options) {
             const response = await this.request({
@@ -23,7 +23,7 @@ export default function ({app, store, redirect}, inject) {
                 return;
             }
             if (!data.options) {
-                console.log('you need to provide apollo options')
+                console.log('you need to provide apollo options');
                 return;
             }
             if (!process.server) {
@@ -31,7 +31,7 @@ export default function ({app, store, redirect}, inject) {
                 store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, data.action);
             }
             try {
-                const response = await $apolloMethod(data.options)
+                const response = await $apolloMethod(data.options);
                 return response;
             } catch (error) {
                 if (!process.server) {
