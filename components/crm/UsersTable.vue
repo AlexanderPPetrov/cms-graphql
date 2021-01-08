@@ -3,7 +3,7 @@
         :headers="getHeaders"
         :items="getUsers"
         sort-by="calories"
-        class="elevation-1"
+        class="elevation-10"
     >
         <template v-slot:top>
             <v-toolbar

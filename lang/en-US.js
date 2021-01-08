@@ -27,7 +27,7 @@ export default {
         antifraud: 'Anti-Fraud',
         members_list: 'Members list',
         payments_list: 'Payments list',
-        payment_methods: 'Payments methods',
+        payment_methods: 'Payment methods',
         sports_bet_list: 'Sports bet list',
         results: 'Results',
         sport_management: 'Sport management',

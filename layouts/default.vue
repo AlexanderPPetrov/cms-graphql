@@ -4,7 +4,7 @@
         <app-bar></app-bar>
         <v-main>
             <v-container fluid fill-height>
-                <v-layout justify-center align-center>
+                <v-layout>
                     <v-flex>
                         <nuxt />
                     </v-flex>
@@ -24,3 +24,8 @@ export default {
     }
 }
 </script>
+<style >
+    .v-main__wrap {
+        padding: 12px 24px;
+    }
+</style>
