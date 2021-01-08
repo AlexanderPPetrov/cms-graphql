@@ -31,7 +31,7 @@
                     large
                     @click="onLogin"
                 >
-                    {{ this.$t('user.login') }}
+                    {{ $t('user.login') }}
                 </v-btn>
             </v-form>
         </v-col>

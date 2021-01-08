@@ -58,5 +58,29 @@ export default {
         report_cashback: 'Report cashback',
         linked_report: 'Linked report',
         anti_fraud_overall: 'Anti-Fraud overall',
+    },
+    dashboard: {
+        summary: {
+            summary: 'Summary',
+            online_users: 'Online users',
+            registrations: 'Registrations',
+            successful_deposits: 'Successful deposits',
+            successful_ftds: 'Successful FTD-s',
+            successful_withdrawals: 'Successful withdrawals',
+            pending_withdrawals: 'Pending withdrawals',
+            user_sport_real_profit: 'User sport real profit',
+            user_sport_virtual_profit: 'User sport virtual profit',
+            user_casino_real_profit: 'User casino real profit',
+            user_casino_virtual_profit: 'User casino virtual profit',
+            sport_awarded_bonus: 'Sport awarded bonus',
+            sport_converted_bonus: 'Sport converted bonus',
+            casino_awarded_bonus: 'Casino awarded bonus',
+            casino_converted_bonus: 'Casino  converted bonus',
+        }
+    },
+    filters: {
+        daily: 'Daily',
+        weekly: 'Weekly',
+        monthly: 'Monthly',
     }
 }
