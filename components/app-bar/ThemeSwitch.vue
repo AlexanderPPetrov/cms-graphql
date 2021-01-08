@@ -1,8 +1,7 @@
 <template>
-    <div class="d-flex align-center">
+    <div class="d-flex align-center mx-1">
         <v-icon class="mr-3">mdi-weather-night</v-icon>
-        <v-switch
-            v-model="darkTheme"
+        <v-switch v-model="darkTheme"
         ></v-switch>
     </div>
 </template>
