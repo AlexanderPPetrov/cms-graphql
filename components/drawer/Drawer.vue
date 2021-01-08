@@ -144,7 +144,6 @@
                 if (item.navKey === 'dashboard') {
                     this.$router.push(this.localePath({name: "index"}));
                 }
-                debugger
             },
             getActiveCategory(index){
                 if(this.$route.path === '/'){

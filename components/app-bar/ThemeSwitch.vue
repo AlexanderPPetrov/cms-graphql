@@ -1,15 +1,17 @@
 <template>
-    <v-switch
-        class="mb-0"
-        v-model="darkTheme"
-    ></v-switch>
+    <div class="d-flex align-center">
+        <v-icon class="mr-3">mdi-weather-night</v-icon>
+        <v-switch
+            v-model="darkTheme"
+        ></v-switch>
+    </div>
 </template>
 <script>
 export default {
     name: 'theme-switch',
     data () {
         return {
-            darkTheme: true,
+            darkTheme: false,
         }
     },
     watch: {

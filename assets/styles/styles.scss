@@ -1,7 +1,10 @@
 // Variables you want to modify
 $btn-border-radius: 0px;
 .theme--dark {
-    .v-card, .v-app-bar, .v-toolbar {
+    &.v-menu__content {
+        box-shadow: none;
+    }
+    .v-card, .v-app-bar, .v-toolbar, .v-list, .v-input--switch__thumb {
         box-shadow: none !important;
     }
 }
