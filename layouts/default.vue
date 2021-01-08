@@ -6,6 +6,7 @@
             <v-container fluid fill-height>
                 <v-layout>
                     <v-flex>
+                        <breadcrumbs></breadcrumbs>
                         <nuxt />
                     </v-flex>
                 </v-layout>
@@ -17,15 +18,17 @@
 <script>
 import AppBar from '../components/app-bar/AppBar';
 import Drawer from "@/components/drawer/Drawer";
+import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 export default {
     components: {
         Drawer,
         AppBar,
+        Breadcrumbs,
     }
 }
 </script>
-<style >
+<style>
     .v-main__wrap {
-        padding: 12px 24px;
+        padding: 24px;
     }
 </style>

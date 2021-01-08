@@ -33,8 +33,9 @@
 </template>
 
 <script>
-
+    import application from "@/mixins/application";
     export default {
+        mixins: [application],
         name: 'drawer',
         data() {
             return {
@@ -144,16 +145,6 @@
                 if (item.navKey === 'dashboard') {
                     this.$router.push(this.localePath({name: "index"}));
                 }
-            },
-            getActiveCategory(index){
-                if(this.$route.path === '/'){
-                    return 'dashboard';
-                }
-                const itemsInRoute = this.$route.path.split('/');
-                if(itemsInRoute[index]){
-                    return itemsInRoute[index]
-                }
-                return '';
             },
             isActiveCategory(navKey) {
                 return navKey === this.getActiveCategory(1);
