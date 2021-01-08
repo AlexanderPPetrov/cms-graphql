@@ -1,46 +1,47 @@
 <template>
-    <v-data-table
-        :headers="getHeaders"
-        :items="getUsers"
-        sort-by="calories"
-        class="elevation-10"
-    >
-        <template v-slot:top>
-            <v-toolbar
-                flat
-            >
+    <v-card>
+        <v-data-table
+            :headers="getHeaders"
+            :items="getUsers"
+            sort-by="calories"
+        >
+            <template v-slot:top>
+                <v-toolbar
+                    flat
+                >
+                    <v-btn
+                        color="primary"
+                        dark
+                        class="mb-2"
+                    >
+                        New Item
+                    </v-btn>
+
+                </v-toolbar>
+            </template>
+            <template v-slot:item.actions="{ item }">
+                <v-icon
+                    small
+                    class="mr-2"
+                >
+                    mdi-pencil
+                </v-icon>
+                <v-icon
+                    small
+                >
+                    mdi-delete
+                </v-icon>
+            </template>
+            <template v-slot:no-data>
                 <v-btn
                     color="primary"
-                    dark
-                    class="mb-2"
+                    @click="initialize"
                 >
-                    New Item
+                    Reset
                 </v-btn>
-
-            </v-toolbar>
-        </template>
-        <template v-slot:item.actions="{ item }">
-            <v-icon
-                small
-                class="mr-2"
-            >
-                mdi-pencil
-            </v-icon>
-            <v-icon
-                small
-            >
-                mdi-delete
-            </v-icon>
-        </template>
-        <template v-slot:no-data>
-            <v-btn
-                color="primary"
-                @click="initialize"
-            >
-                Reset
-            </v-btn>
-        </template>
-    </v-data-table>
+            </template>
+        </v-data-table>
+    </v-card>
 </template>
 
 <script>

@@ -1,2 +1,7 @@
 // Variables you want to modify
 $btn-border-radius: 0px;
+.theme--dark {
+    .v-card, .v-app-bar, .v-toolbar {
+        box-shadow: none !important;
+    }
+}
