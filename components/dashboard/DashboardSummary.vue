@@ -5,36 +5,20 @@
                 {{ $t('dashboard.summary.summary') }}
             </div>
             <v-spacer></v-spacer>
-            <v-menu
-                bottom
-                left
+            <v-select
+                :items="getItems"
+                solo
                 dense
-            >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        dark
-                        icon
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        <div>
-                            {{ selected }}
-                            <v-icon>mdi-dots-vertical</v-icon>
-                        </div>
-                    </v-btn>
-                </template>
-                <v-list dense class="pa-0">
-                    <v-list-item
-                        v-for="(item, i) in getItems"
-                        :key="i"
-                        link
-                        @click="setSelectedItem"
-                    >
-                        <v-list-item-title>{{ item }}</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+                flat
+                hide-details
+                v-model="selected"
+            ></v-select>
         </v-card-title>
+        <div class="row no-gutters">
+            <div class="d-flex align-center flex-column col col-6">
+
+            </div>
+        </div>
     </v-card>
 </template>
 
@@ -52,6 +36,7 @@ export default {
     },
     computed: {
         getItems() {
+            console.log(this.items.map(item => this.$t(`filters.${item}`)))
             return this.items.map(item => this.$t(`filters.${item}`))
         }
     },
@@ -63,6 +48,8 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+    .v-text-field.v-text-field--enclosed {
+        flex: 0 0 120px;
+    }
 </style>

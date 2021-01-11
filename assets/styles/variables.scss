@@ -3,8 +3,10 @@
 
 $material-light: (
     'background': #f6f7ff,
+    'inputs': (
+        'solo-inverted-focused-text': #b9b9b9,
+    ),
 );
-
 
 // App bar
 $app-bar-elevation: 1 !default;
@@ -14,7 +16,13 @@ $card-elevation: 10 !default;
 
 // Input slot
 $input-slot-margin-bottom: 0 !default;
-$messages-min-height: 0 !default;
 
 // Breadcrumbs
 $breadcrumbs-padding: 12px;
+
+// Card
+$card-title-font-size: 20px;
+$card-title-font-weight: 400;
+.v-card__title {
+    color: #6e6e6e;
+}
