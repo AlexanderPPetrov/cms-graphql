@@ -54,10 +54,6 @@ export default {
                         enabled: false
                     },
                 },
-                theme: {
-                    mode: this.$vuetify.theme.dark ? 'dark' : 'light',
-                    palette: 'palette1',
-                },
                 dataLabels: {
                     enabled: false
                 },
@@ -83,6 +79,7 @@ export default {
                     ],
                 },
                 tooltip: {
+                    theme: this.$vuetify.theme.dark ? 'dark' : 'light',
                     y: [
                         {
                             title: {
