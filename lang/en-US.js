@@ -62,8 +62,10 @@ export default {
     dashboard: {
         summary: {
             summary: 'Summary',
+            users: 'Users',
             online_users: 'Online users',
             registrations: 'Registrations',
+            balance: 'Balance',
             successful_deposits: 'Successful deposits',
             successful_ftds: 'Successful FTD-s',
             successful_withdrawals: 'Successful withdrawals',

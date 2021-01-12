@@ -7,4 +7,10 @@ $btn-border-radius: 0px;
     .v-card, .v-app-bar, .v-toolbar, .v-list, .v-input--switch__thumb {
         box-shadow: none !important;
     }
+    .v-navigation-drawer--is-mobile:not(.v-navigation-drawer--close), .v-navigation-drawer--temporary:not(.v-navigation-drawer--close) {
+        box-shadow: none !important;
+    }
+}
+.v-messages__wrapper {
+    padding-top: 6px;
 }

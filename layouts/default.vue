@@ -27,8 +27,15 @@ export default {
     }
 }
 </script>
-<style>
+<style lang="scss">
+    @import '~vuetify/src/styles/settings/_variables';
+
     .v-main__wrap {
         padding: 24px;
+    }
+    @media #{map-get($display-breakpoints, 'sm-and-down')} {
+        .v-main__wrap {
+            padding: 6px;
+        }
     }
 </style>
