@@ -21,6 +21,7 @@ export default {
         '~/plugins/vuelidate',
         '~/plugins/api',
         '~/plugins/apollo',
+        { src : '~/plugins/vue-apexchart.js', ssr : false },
     ],
     router: {
         middleware: ['auth']
@@ -97,7 +98,7 @@ export default {
     },
     // Build Configuration (https://go.nuxtjs.dev/config-build)
     build: {
-
+        vendor: ['vue-apexchart'],
     },
     telemetry: false,
 }

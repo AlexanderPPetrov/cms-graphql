@@ -53,6 +53,40 @@ export default {
                             value: '156.90 €',
                         }
                     ]
+                },
+                {
+                    titleKey: 'balance',
+                    summaryItems: [
+                        {
+                            summaryKey: 'successful_deposits',
+                            icon: 'mdi-trending-up',
+                            color: 'success',
+                            value: '400.30 €',
+                        },
+                        {
+                            summaryKey: 'successful_withdrawals',
+                            icon: 'mdi-trending-down',
+                            color: 'error',
+                            value: '156.90 €',
+                        }
+                    ]
+                },
+                {
+                    titleKey: 'balance',
+                    summaryItems: [
+                        {
+                            summaryKey: 'successful_deposits',
+                            icon: 'mdi-trending-up',
+                            color: 'success',
+                            value: '400.30 €',
+                        },
+                        {
+                            summaryKey: 'successful_withdrawals',
+                            icon: 'mdi-trending-down',
+                            color: 'error',
+                            value: '156.90 €',
+                        }
+                    ]
                 }
             ]
         }

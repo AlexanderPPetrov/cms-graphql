@@ -52,7 +52,6 @@ export default {
     },
     computed: {
         getItems() {
-            console.log(this.items.map(item => this.$t(`filters.${item}`)))
             return this.items.map(item => this.$t(`filters.${item}`))
         }
     },
