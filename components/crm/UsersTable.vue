@@ -6,18 +6,18 @@
             sort-by="calories"
         >
             <template v-slot:top>
-                <v-toolbar
-                    flat
-                >
-                    <v-btn
-                        color="primary"
-                        dark
-                        class="mb-2"
-                    >
-                        New Item
-                    </v-btn>
+<!--                <v-toolbar-->
+<!--                    flat-->
+<!--                >-->
+<!--                    <v-btn-->
+<!--                        color="primary"-->
+<!--                        dark-->
+<!--                        class="mb-2"-->
+<!--                    >-->
+<!--                        New Item-->
+<!--                    </v-btn>-->
 
-                </v-toolbar>
+<!--                </v-toolbar>-->
             </template>
             <template v-slot:item.actions="{ item }">
                 <v-icon
