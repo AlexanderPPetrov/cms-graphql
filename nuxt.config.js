@@ -1,6 +1,5 @@
-import {i18nConfig} from './config';
-
-export default {
+var i18nConfig = require('./config');
+module.exports = {
     head: {
         title: 'cms',
         meta: [
@@ -98,7 +97,7 @@ export default {
     },
     // Build Configuration (https://go.nuxtjs.dev/config-build)
     build: {
-        vendor: ['vue-apexchart'],
+
     },
     telemetry: false,
 }

@@ -1,6 +1,5 @@
-import en from '../lang/en-US.js'
-
-export const i18nConfig = {
+var en = require('../lang/en-US.js')
+module.exports = {
     locales: [
         {
             code: 'en',
@@ -16,5 +15,3 @@ export const i18nConfig = {
         }
     }
 };
-
-export const baseURL = 'http://localhost:3000/api';

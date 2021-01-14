@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     user: {
         email: "Email",
         email_invalid: "Please enter a valid email",
