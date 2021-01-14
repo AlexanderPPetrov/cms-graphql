@@ -24,7 +24,8 @@ export default {
             const users = await User.find({}).select("-password");
             return users;
         },
-        currentUser: async (root, args, {user}) => {
+        currentUser: async (root, args, {user, ip, location}) => {
+            console.log(ip, location)
             if (!user) {
                 throw new ValidationError([{
                     key: 'user',
@@ -106,16 +107,19 @@ export default {
                 generateError(fieldErrors, 'password', password, 'incorrect');
                 throw new ValidationError(fieldErrors);
             }
-
+            const lastLogin = Date.now();
+            user.lastLogin = lastLogin;
+            await user.save();
             return jsonwebtoken.sign(
                 {
                     _id: user._id,
                     email: user.email,
                     roles: user.roles,
+                    lastLogin,
                 },
                 process.env.JWT_SECRET,
                 {
-                    expiresIn: '1d'
+                    expiresIn: process.env.TOKEN_EXPIRATION ?? '1d',
                 }
             )
         },

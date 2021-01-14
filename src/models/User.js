@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
     },
     lastLogin: {
         type: Date,
-        default: 0,
+        default: null,
     },
     roles: {
         type: [String],

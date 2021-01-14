@@ -7,6 +7,7 @@ import schema from "./graphql/GraphQLSchema";
 import ValidationError from './graphql/ValidationError';
 import dotenv from "dotenv";
 import consola from "consola";
+import { lookup } from "geoip-lite";
 import jwt from "express-jwt";
 
 dotenv.config();
@@ -41,10 +42,13 @@ app.use(
     bodyParser.json(),
     auth,
     graphqlHTTP(req => {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         return {
             schema,
             context: {
-                user: req.user
+                user: req.user,
+                ip,
+                location: lookup(ip),
             },
             graphiql: true,
             customFormatErrorFn: error => {

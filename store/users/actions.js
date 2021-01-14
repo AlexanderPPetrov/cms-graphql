@@ -11,7 +11,10 @@ export default {
                 query: currentUser,
                 fetchPolicy: 'no-cache',
             });
-        return response.data.currentUser
+        if (response) {
+            return response.data.currentUser
+        }
+        return null
     },
     async [actions.GET_USERS]({commit}) {
         const response = await this.$apollo.query(
@@ -20,7 +23,9 @@ export default {
                 query: users,
                 fetchPolicy: "no-cache",
             });
-        commit(mutations.SET_USERS, response.data.users);
+        if (response) {
+            commit(mutations.SET_USERS, response.data.users);
+        }
     },
     async [actions.AUTH_LOGIN]({commit}, payload) {
         const response = await this.$apollo.mutate(
@@ -30,10 +35,10 @@ export default {
                 variables: payload.data
             })
 
-        if(response){
-            console.log('response',response);
-            await this.$apolloHelpers.onLogin(response.data.login, undefined, { expires: 1 })
-            if(payload.success){
+        if (response) {
+            console.log('response', response);
+            await this.$apolloHelpers.onLogin(response.data.login, undefined, {expires: 1})
+            if (payload.success) {
                 payload.success(response)
             }
         }

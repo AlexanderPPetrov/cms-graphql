@@ -56,9 +56,6 @@ module.exports = {
                 errorPolicy: "all"
             }
         },
-        watchLoading: "~/plugins/apollo-loading-handler.js",
-        errorHandler: '~/plugins/apollo-error-handler.js',
-
         authenticationType: 'Bearer',
 
         // [deprecated] Enable the graphql-tag/loader to parse *.gql/*.graphql files
@@ -71,9 +68,8 @@ module.exports = {
             secure: false,
         },
         clientConfigs: {
-            default: {
-                httpEndpoint: process.env.GRAPHQL_BASE_URL
-            }
+            default: '~/plugins/apollo-default.js'
+
         }
     },
     publicRuntimeConfig: {
@@ -86,7 +82,9 @@ module.exports = {
             baseURL: process.env.API_BASE_URL
         }
     },
-
+    env: {
+        GRAPHQL_BASE_URL: process.env.GRAPHQL_BASE_URL || 'http://localhost:3000/graphql'
+    },
     module: {
         rules: [
             {
