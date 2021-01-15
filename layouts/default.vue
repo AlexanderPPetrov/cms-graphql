@@ -1,5 +1,5 @@
 <template>
-    <v-app id="inspire">
+    <v-app>
         <drawer></drawer>
         <app-bar></app-bar>
         <v-main>
@@ -7,11 +7,12 @@
                 <v-layout>
                     <v-flex>
                         <breadcrumbs></breadcrumbs>
-                        <nuxt />
+                        <nuxt/>
                     </v-flex>
                 </v-layout>
             </v-container>
         </v-main>
+        <network-error></network-error>
     </v-app>
 </template>
 
@@ -19,11 +20,13 @@
 import AppBar from '../components/app-bar/AppBar';
 import Drawer from "@/components/drawer/Drawer";
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+import NetworkError from "@/components/network-error/NetworkError";
 export default {
     components: {
         Drawer,
         AppBar,
         Breadcrumbs,
+        NetworkError,
     }
 }
 </script>

@@ -36,14 +36,17 @@ export default function ({app, store, redirect}, inject) {
             } catch (error) {
                 if (!process.server) {
                     if (error.graphQLErrors) {
-                        error.graphQLErrors.forEach(error => {
-                            if (error.message === 'validation_error') {
-                                store.commit(`network/${mutations.ADD_RESPONSE_ERROR}`, {
-                                    name: data.action,
-                                    error: error.validationErrors,
-                                });
-                            }
+                        const validationErrors = error.graphQLErrors.filter(error => error.message === 'validation_error')
+                        validationErrors.forEach(error => {
+                            store.commit(`network/${mutations.ADD_RESPONSE_ERROR}`, {
+                                name: data.action,
+                                error: error.validationErrors,
+                            });
                         })
+                        const networkErrors = error.graphQLErrors.filter(error => error.message !== 'validation_error');
+                        if(networkErrors.length){
+                            store.commit(`network/${mutations.SET_NETWORK_ERRORS}`, networkErrors);
+                        }
                     }
                     store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, data.action);
                 }

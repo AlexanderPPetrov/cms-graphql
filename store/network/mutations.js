@@ -23,4 +23,7 @@ export default {
     [mutations.UPDATE_RESPONSE_ERROR](state, {index, error}) {
         state.responseErrors.splice(index, 1, error);
     },
+    [mutations.SET_NETWORK_ERRORS](state, value) {
+        state.networkErrors = value;
+    },
 };
