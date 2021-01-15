@@ -3,8 +3,14 @@
         <v-data-table
             :headers="getHeaders"
             :items="getUsers"
-            sort-by="calories"
+            sort-by="createdAt"
         >
+            <template v-slot:item.createdAt="{ item }">
+                {{ $moment(item).format('DD mm YYYY') }}
+            </template>
+            <template v-slot:item.lastLogin="{ item }">
+                {{ $moment(item).format('DD MM YYYY')}}
+            </template>
             <template v-slot:item.actions="{ item }">
                 <v-icon
                     small
@@ -42,7 +48,8 @@ export default {
                 {text: this.$t('user.lastName'), value: 'lastName'},
                 {text: this.$t('user.roles'), value: 'roles'},
                 {text: this.$t('user.createdAt'), value: 'createdAt'},
-                {text: this.$t('user.lastLogin'), value: 'createdAt'},
+                {text: this.$t('user.lastLogin'), value: 'lastLogin'},
+                {value: 'actions'},
             ]
         }
     },

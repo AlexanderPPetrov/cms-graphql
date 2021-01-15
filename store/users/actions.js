@@ -9,7 +9,6 @@ export default {
             actions.GET_CURRENT_USER,
             {
                 query: currentUser,
-                fetchPolicy: 'no-cache',
             });
         if (response) {
             return response.data.currentUser
@@ -21,7 +20,6 @@ export default {
             actions.GET_USERS,
             {
                 query: users,
-                fetchPolicy: "no-cache",
             });
         if (response) {
             commit(mutations.SET_USERS, response.data.users);

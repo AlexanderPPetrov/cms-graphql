@@ -2,6 +2,7 @@ import { onError } from 'apollo-link-error'
 
 export default function(ctx) {
     const errorLink = onError(({ graphQLErrors, networkError }) => {
+        // take logic for errors from apollo.js and place it here
         console.log(graphQLErrors, networkError)
     })
     return {

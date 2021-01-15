@@ -3,7 +3,12 @@ import mutations from "../store/network/mutation-types";
 export default function ({app, store, redirect}, inject) {
     const apolloClient = app.apolloProvider.defaultClient;
     const apollo = {
-        async query(action, options) {
+        async query(action, queryOptions) {
+            const defaultOptions = {
+                errorPolicy: "all",
+                fetchPolicy: "no-cache",
+            }
+            const options = Object.assign({}, defaultOptions, queryOptions);
             const response = await this.request({
                 action,
                 options,
@@ -30,10 +35,12 @@ export default function ({app, store, redirect}, inject) {
                 store.commit(`network/${mutations.ADD_ACTIVE_ACTION}`, data.action);
                 store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, data.action);
             }
+            console.log(data.options);
             try {
                 const response = await $apolloMethod(data.options);
                 return response;
             } catch (error) {
+                console.log(error);
                 if (!process.server) {
                     if (error.graphQLErrors) {
                         const validationErrors = error.graphQLErrors.filter(error => error.message === 'validation_error')

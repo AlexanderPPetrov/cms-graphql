@@ -32,6 +32,7 @@ module.exports = {
     buildModules: [
         '@nuxtjs/vuetify',
         '@nuxtjs/pwa',
+        '@nuxtjs/moment',
     ],
     modules: [
         '@nuxtjs/axios',
@@ -69,8 +70,11 @@ module.exports = {
         },
         clientConfigs: {
             default: '~/plugins/apollo-default.js'
-
         }
+    },
+    moment: {
+        defaultLocale: 'en',
+        locales: ['de'],
     },
     publicRuntimeConfig: {
         axios: {
