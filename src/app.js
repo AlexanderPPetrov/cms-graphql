@@ -8,6 +8,7 @@ import ValidationError from './graphql/ValidationError';
 import dotenv from "dotenv";
 import consola from "consola";
 import { lookup } from "geoip-lite";
+import MobileDetect from "mobile-detect";
 import jwt from "express-jwt";
 
 dotenv.config();
@@ -49,6 +50,7 @@ app.use(
                 user: req.user,
                 ip,
                 location: lookup(ip),
+                md: new MobileDetect(req.headers['user-agent'])
             },
             graphiql: true,
             customFormatErrorFn: error => {

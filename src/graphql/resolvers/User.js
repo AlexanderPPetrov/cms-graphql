@@ -20,7 +20,8 @@ export default {
             }
             return user;
         },
-        users: async () => {
+        users: async (root, args, context) => {
+            console.log('--->', context);
             const users = await User.find({}).select("-password");
             return users;
         },
@@ -93,7 +94,8 @@ export default {
             )
 
         },
-        login: async (root, {email, password}) => {
+        login: async (root, {email, password}, context) => {
+            console.log(context);
             const user = await User.findOne({email});
             let fieldErrors = {};
             if (!user) {

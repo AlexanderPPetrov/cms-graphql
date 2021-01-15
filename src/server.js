@@ -19,7 +19,6 @@ async function start() {
         await builder.build()
     }
 
-
     // Give nuxt middleware to express
     app.use(nuxt.render);
 
