@@ -1,5 +1,5 @@
 {
-    "name": "cms",
+    "name": "Orbit",
     "version": "1.0.0",
     "private": true,
     "main": "build/server.js",
