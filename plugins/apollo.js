@@ -35,12 +35,13 @@ export default function ({app, store, redirect}, inject) {
                 store.commit(`network/${mutations.ADD_ACTIVE_ACTION}`, data.action);
                 store.commit(`network/${mutations.REMOVE_RESPONSE_ERROR}`, data.action);
             }
-            console.log(data.options);
             try {
                 const response = await $apolloMethod(data.options);
+                if(response.errors){
+                    store.commit(`network/${mutations.SET_NETWORK_ERRORS}`, response.errors);
+                }
                 return response;
             } catch (error) {
-                console.log(error);
                 if (!process.server) {
                     if (error.graphQLErrors) {
                         const validationErrors = error.graphQLErrors.filter(error => error.message === 'validation_error')
@@ -50,10 +51,7 @@ export default function ({app, store, redirect}, inject) {
                                 error: error.validationErrors,
                             });
                         })
-                        const networkErrors = error.graphQLErrors.filter(error => error.message !== 'validation_error');
-                        if(networkErrors.length){
-                            store.commit(`network/${mutations.SET_NETWORK_ERRORS}`, networkErrors);
-                        }
+
                     }
                     store.commit(`network/${mutations.REMOVE_ACTIVE_ACTION}`, data.action);
                 }
