@@ -25,7 +25,7 @@ Server - [Graphql Express docs](https://graphql.org/graphql-js/express-graphql/)
 
 Example .env file
 
-Replace MONGODB_URL with real one
+API_BASE_URL is optional in case we need to add a rest api the future
 
 ```
 MONGODB_URL="mongodb+srv://<user>:<password>@cluster0.ruepg.mongodb.net/<database>?retryWrites=true&w=majority"
